@@ -1,12 +1,22 @@
+// plugin
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
 const path = require('path');
 
 module.exports = {
   mode: 'development', // 默认为 production 生产环境 production(压缩代码) |  development(不会压缩代码)
   entry: './src/index.js', // 打包指定的入口文件
   output: {            // 打包输出到指定的文件
-    filename: 'index.js',
+    filename: 'dist.js',
     path: path.resolve(__dirname, 'dist')
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'src/index.html'
+    }),
+    new CleanWebpackPlugin()
+  ],
   module: {
     rules: [                // 规则 数组 说明可以接受多个规则
       {
@@ -22,10 +32,25 @@ module.exports = {
         }
       },
       {
-        test: /\.scss$/,
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            outputPath: 'font/'
+          }
+        }
+      },
+      {
+        test: /\.(css|scss)$/,
         use: [
           'style-loader',
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+              // modules: true
+            }
+          },
           'postcss-loader',
           'sass-loader',  // 从下到上 自右到左
         ]

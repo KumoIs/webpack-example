@@ -1,18 +1,17 @@
+import createImg from './components/createImg';
+import createTest from './components/createTest';
 import Header from './components/header';
 import Sidebar from './components/sidebar';
 import Content from './components/content';
 
-import smile from './assets/smile.jpg'
-
 import './index.scss';
+import './styled.css';
+import './styles/font.scss'
 
-console.log(smile);
+createImg()
+createTest()
 
-var img = new Image();
-img.src = smile
-img.classList.add("avatar")
-var dom = document.getElementById('root');
-var img = dom.append(img);
+
 
 new Header();
 new Sidebar();

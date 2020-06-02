@@ -1,0 +1,7 @@
+.avatar {
+  transition: transform 1s;
+}
+
+.avatar:hover {
+  transform: rotate(360deg)
+}
