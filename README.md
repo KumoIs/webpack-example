@@ -249,3 +249,73 @@ module.exports = {
 // CLI 参数中 
 webpack --mode=production
 ```
+
+## 八，devServer 和 devtools 以及 HMR
+> devServer 可以为我们启动 `webpack` 打包后启动一个服务，即便你修改了他也可以实现自动更新。
+```javascript
+// 设置 devServer 前提需要安装 `webpack-dev-server` 如果不使用可以使用 `webpack-dev-middleware` + `express` 来实现一个简单 server
+// ⚠️注意： webpack-dev-server 打包时他的打包目录会在内存中，这样主要是提高打包速度 。
+const express = require('express');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const config = require('./webpack.config');
+const compiler = webpack(config);
+
+const app = express();
+
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath
+}))
+
+app.listen(8099, () => {
+    console.log('测试链接通过。。。')
+})
+```
+> HMR: Hot Module Replacement, 当你前面增加了一些数据时，但是发现 css 不对，可你修改样式以后发现之前增加当数据没了，又要重新增加，那么此时 `HMR` 就时解决此问题。
+> devtools（sourceMap webpack中专门用来获取错误的配置方案） 一般用来处理打包处理报错结果的，根据不同的配置会出现不同的打包速度。
+ ![image-20200609220406565](/Users/zhanzhao/Library/Application Support/typora-user-images/image-20200609220406565.png)
+>（具体配置查看package.json）
+
+## 九、babel
+
+> babel 可以将js中 `ES6` 在打包后编译为 `ES5` 让其可以兼容老的游览器比如：ie， 首先需要安装 babel-loader 和 @babel/core
+
+`yarn add babel-loader @babel/core @babel/preset-env @babel/polyfill`
+
+1. @babel/core 可以让 `webpack` 读取js内容并将其转换成 **`AST抽象语法树`** 最后转化为 `ES5`
+
+2. 当配置了以上 `babel`, 但实际上并未做任何事情。只是在项目中创建 `.babelrc` 配置, 然后通过 `preset-env` 来去预设他，让其可以将代码转换成 `ES5`
+
+3. @babel/polyfill 上面解释到到配置并不能完全将所有 `ES6` 转变成 `ES5`， 需要用到 `polyfill` 
+```javascript
+module.exports = {
+  moduel: {
+    rules: [
+        {
+          test: /\.js$/,
+          exclude: /(node_modules|bower_components)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                // presets 配置参数写法，数组第一个target要使用到preset，第二个options为参数
+                ['@babel/preset-env', {
+                // 指定编译环境
+                  targets: {
+                    chrome: "67", 
+                  },
+                // 如果没有配置，那么在编译时会将原本没用到的低版本特性也全部编译进来。造成文件非常大
+                  useBuiltIns: 'usage'
+                }]
+              ]
+            }
+          }
+        },
+    ] 
+  }
+}
+
+// index.js
+// 注意：最好是在顶部引入，优先引入它，以免出现报错 或者 失效 的情况
+import '@babel/polyfill'
+```

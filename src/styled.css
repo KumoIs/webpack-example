@@ -5,3 +5,11 @@
 .avatar:hover {
   transform: rotate(360deg)
 }
+
+span {
+  display: block;
+}
+
+span:nth-of-type(odd) {
+  background: peru;
+}
