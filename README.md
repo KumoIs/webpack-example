@@ -27,29 +27,23 @@
 
 ## 二、安装 以及指令
    * **安装，提醒：webpack4.x 版本需要额外安装 webpack-cli**       
-```javascript
+```npm
 yarn add webpack webpack-cli -D // 安装 `webpack`
 ```
 
    * **配置**
-```javascript
+```npm
 yarn webpack index.js // 指定你要打包一个名为 index.js 的文件。如果你没有配置 `webpack.config.js` webpack 会自动给你调用它的默认打包方式
 
-//  打包完成以后的提示，以下为详细解释
 Hash: '*****'  // 本次打包唯一一次唯一值
 Version： webpack 4.*.* // 本地打包webpack版本
 Time: **m // 本次打包耗时
 Built at: 2020-05-26 21:50
 	Asset(文件名)		Size(文件大小)	   Chunks(文件对应ID)	Chunk Names(入口文件 对应 entry)
 	dist.js			  1.36KiB			0				   main
-[0] ./src/index.js + 3 modules 714 bytes {0} [built] (打包的入口文件， 打包了那些文件)
-    | ./src/index.js 151 bytes [built]
-    | ./src/header.js 187 bytes [built]
-    | ./src/sidebar.js 188 bytes [built]
-    | ./src/content.js 188 bytes [built]
 ```
    *  **指定配置文件**
-```javascript
+```npm
 yarn webpack --config webapckconfig.js  // 指定一个文件名为`webpack`配置文件，来执行打包。
 ```
 ## 三、核心概念：入口 entry
@@ -93,7 +87,9 @@ yarn webpack --config webapckconfig.js  // 指定一个文件名为`webpack`配�
 ```javascript
     const path = require('path')
     module.exports = {
-        entry: main:'./src/index.js',
+        entry: {
+          main:'./src/index.js'
+        },
         //__dirname:返回当前模块的目录名; 
         //__filename:返回当前模块的文件名;
         output:{
@@ -122,20 +118,9 @@ yarn webpack --config webapckconfig.js  // 指定一个文件名为`webpack`配�
 * **作用**
     >loader 让 webpack 能够去处理那些非 JavaScript 文件（webpack 自身只理解 JavaScript）
     >loader 可以将所有类型的文件转换为 webpack 能够处理的有效模块
-* **loader 使用方式：配置**(常用)
-```javascript
-// 安装 loader 
-npm install --save-dev css-loader
-```
->webpack 4.x | babel-loader 8.x | babel 7.x
-```javascript
-//babel 7以下  es6转es5
-npm install -D babel-loader @babel/core @babel/preset-env webpack
-```
->webpack 4.x | babel-loader 7.x | babel 6.x
-```javascript
-//babel 7以上  es6转es5
-npm install -D babel-loader@7 babel-core babel-preset-env webpack
+* **loader 使用方式：配置/安装**(常用)
+```npm
+yarn add css-loader style-loader
 ```
 ```javascript
     module.exports = {
@@ -170,12 +155,12 @@ npm install -D babel-loader@7 babel-core babel-preset-env webpack
 import Styles from 'style-loader!css-loader?modules!./styles.css';
 ```
 * **loader 使用方式：CLI**（不常用）
-```javascript
+```npm
 webpack --module-bind jade-loader --module-bind 'css=style-loader!css-loader' 
-// 如上 会对 .jade 文件使用 jade-loader，对 .css 文件使用 style-loader 和 css-loader
 ```
+如上 会对 .jade 文件使用 jade-loader，对 .css 文件使用 style-loader 和 css-loader
 * **loader 特性**
-    1. 几乎所有 loader 都 需要安装， 但 不需要 在 webpack 配置文件中通过 `require` 引入
+    1. 几乎所有 loader 都需要安装， 但不需要在 webpack 配置文件中通过 `require` 引入
     2. 逆向编译，链式传递
 ```javascript
 // webpack 配置 
@@ -197,7 +182,7 @@ module.exports = {
 
     >plugins 就是使用webpack的插件的地方
 * **plugin 使用**
-```JavaScript
+```npm
 npm i html-webpack-plugin -D
 ```
 ```JavaScript
@@ -245,8 +230,8 @@ module.exports = {
     mode: 'production' 
 };
 ```
-```javascript
-// CLI 参数中 
+CLI 参数中 
+```npm
 webpack --mode=production
 ```
 
@@ -286,7 +271,7 @@ app.listen(8099, () => {
 
 2. 当配置了以上 `babel`, 但实际上并未做任何事情。只是在项目中创建 `.babelrc` 配置, 然后通过 `preset-env` 来去预设他，让其可以将代码转换成 `ES5`
 
-3. @babel/polyfill 上面解释到到配置并不能完全将所有 `ES6` 转变成 `ES5`， 需要用到 `polyfill` 
+3. @babel/polyfill Babel默认只转换新的JavaScript句法（syntax），而不转换新的API，比如Iterator、Generator、Set、Maps、Proxy、Reflect、Symbol、Promise等全局对象，以及一些定义在全局对象上的方法（比如Object.assign）都不会转码。举例来说，ES6在Array对象上新增了Array.from方法。Babel就不会转码这个方法。如果想让这个方法运行，必须使用babel-polyfill，为当前环境提供一个垫片。
 ```javascript
 module.exports = {
   moduel: {
@@ -317,5 +302,40 @@ module.exports = {
 
 // index.js
 // 注意：最好是在顶部引入，优先引入它，以免出现报错 或者 失效 的情况
+// 使用方法 entry: ["@babel/polyfill"， "index.js"] 或者 import
 import '@babel/polyfill'
+```
+**注意：上面提到 `polyfill` 专门用来处理全局上最新 API 但是当你引入第三方库也出现了这些 API 就会污染内置对象，所以当你在应用库或者ui组件时并不建议使用 `polyfill`，而是使用 `transform-runtime`**
+> 使用 `transform-runtime` 自然是先安装 `yarn add @babel/plugin-transform-runtime`(下面将使用第二种方法配置，上面当 `presets` 同样可以用该方法)，先创建一个 `.babelrc` 文件
+```javascript
+// .babelrc
+
+{
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime", {
+        "corejs": 3,
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": false,
+      }
+    ]
+  ]
+}
+
+
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel-loader'
+      },
+    ] 
+  }
+}
+
+// 当你配置了 babel-loader 时，他会让 webpack 打包遇到 js 文件时默认使用 .babelrc 来处理打包
 ```

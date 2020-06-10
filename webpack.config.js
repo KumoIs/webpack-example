@@ -45,18 +45,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              // presets 配置参数写法，数组第一个target要使用到preset，第二个options为参数
-              ['@babel/preset-env', {
-              // 如果没有配置，那么在编译时会将原本没用到的低版本特性也全部编译进来。造成文件非常大
-                useBuiltIns: 'usage'
-              }]
-            ]
-          }
-        }
+        loader: 'babel-loader'
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
