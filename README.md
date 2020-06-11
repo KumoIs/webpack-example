@@ -135,41 +135,30 @@ yarn add css-loader style-loader
     module.exports ={
         module:{
             test:[{
-                    test: /\.css$/,
-                    exclude: /(node_modules|bower_components)/, //这里的话 是要排除 node_modules或bower_components
-                    use: ['style-loader',{
-                        loader:'css-loader',
-                        options:{   //为了文件更干净 可以创建一个 .babelrc文件 将options对象放进去  还有可以直接在这里这样配置  第三种方法则是 package.js里配置
-                            modules:true
-                        }
-                    }]
-             },]
+                test: /\.css$/,
+                exclude: /(node_modules|bower_components)/, //这里的话 是要排除 node_modules或bower_components
+                use: ['style-loader',{
+                    loader:'css-loader',
+                    options:{   //为了文件更干净 可以创建一个 .babelrc文件 将options对象放进去  还有可以直接在这里这样配置  第三种方法则是 package.js里配置
+                        modules:true
+                    }
+                }]
+             }]
         }
     }
     //html,js都是类似操作，或者 npm 看文档说明配置
 ```
-
-* **loader 使用方式：内联**（不常用）
-```javascript
-// 在项目文件中，import 语句时使用 
-import Styles from 'style-loader!css-loader?modules!./styles.css';
-```
-* **loader 使用方式：CLI**（不常用）
-```npm
-webpack --module-bind jade-loader --module-bind 'css=style-loader!css-loader' 
-```
-如上 会对 .jade 文件使用 jade-loader，对 .css 文件使用 style-loader 和 css-loader
 * **loader 特性**
     1. 几乎所有 loader 都需要安装， 但不需要在 webpack 配置文件中通过 `require` 引入
-    2. 逆向编译，链式传递
+    2. 逆向编译，链式传递。简单来说从右往左，在从下到上进行编译到，下面到列子中 loader 先把 css 通过 postcss 编译成 loader 在编译为 css 再到 loader 之后 style 最后 loader 编译完成
 ```javascript
 // webpack 配置 
 module.exports = { 
     module: { 
-            rules: [{ 
-                test: /\.css$/, 
-                use: ['style-loader', 'css-loader', 'postcss-loader'] 
-            }] 
+        rules: [{ 
+            test: /\.css$/, 
+            use: ['style-loader', 'css-loader', 'postcss-loader'] 
+        }] 
     } 
  };
 ```
@@ -256,9 +245,13 @@ app.listen(8099, () => {
     console.log('测试链接通过。。。')
 })
 ```
-> HMR: Hot Module Replacement, 当你前面增加了一些数据时，但是发现 css 不对，可你修改样式以后发现之前增加当数据没了，又要重新增加，那么此时 `HMR` 就时解决此问题。
+> HMR: Hot Module Replacement, 当你在页面增加了一些数据时，但是发现 css 不对，可你修改样式以后发现之前增加当数据没了，又要重新增加。HMR 就能解决次问题。
 > devtools（sourceMap webpack中专门用来获取错误的配置方案） 一般用来处理打包处理报错结果的，根据不同的配置会出现不同的打包速度。
- ![image-20200609220406565](/Users/zhanzhao/Library/Application Support/typora-user-images/image-20200609220406565.png)
+* cheap: 在生成 sourceMap 时，只带行信息，不带列信息。
+* module: 如果没有添加 module 那么在编译生成 sourceMap 时不会处理 module
+* eval： 生成 sourceMap 的方式
+* sourceMap： 会生成 sourcMap 文件，如果配置了 eval 则会编译到 dist 也就是出口文件中
+ 
 >（具体配置查看package.json）
 
 ## 九、babel
@@ -338,4 +331,22 @@ module.exports = {
 }
 
 // 当你配置了 babel-loader 时，他会让 webpack 打包遇到 js 文件时默认使用 .babelrc 来处理打包
+```
+
+## 十、Terr Shaking
+> 在 js 使用 utilsjs 某一个方法 可是只使用了一个，而 webpack 将所有 utils 方法都编译出来了，这种是完全多余的，Tree Shaking 解决了这个问题。
+```javascript
+module.exports = {
+  optimization: {
+    usedExports: true
+  }
+};
+// 上面代码中，如果是开发模式，也无需配置，webpack 在开发模式下会自动配置。
+
+// package.json
+{
+  "sideEffects": false // false 表示对所有对文件都采用 Tree ShaKing
+  // 指定那些文件不用 Tree Shaking, 以数组形式引入多个不需要 Tree Shaking 的文件
+  // "sideEffects": ['@babel/polyfill']
+}
 ```
