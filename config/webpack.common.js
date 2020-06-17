@@ -3,35 +3,26 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const path = require('path');
-const webpack = require('webpack');
 
 module.exports = {
-  mode: 'development',               // 默认为 production 生产环境 production(压缩代码) |  development(不会压缩代码)
   entry: {
     main: './src/index.js'
   },                                 // 打包指定的入口文件, 可以配置多个
-  devServer: {
-    contentBase: path.join(__dirname, 'dist'),  // 指定需要启动服务的webpack打包过后的文件
-    compress: true,                  // 压缩代码
-    open: true,                      // 编译后自动启动游览器
-    port: 9001,                      // 启东时端口号
-    hot: true,                       // 修改源码保存，不刷新游览器
-    hotOnly: true                    // 即使更改代码没有生效也不刷新游览器
-  },
   output: {                          // 打包输出到指定的文件
     publicPath: "/",                 // 所有打包文件引入地址都以根路径开头
     filename: 'dist.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, '../', 'dist')
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     }),                               // 打包 html 文件
     new CleanWebpackPlugin(),         // 自动删除旧当打包文件
-    new webpack.HotModuleReplacementPlugin(), // 启动HMR
   ],
   optimization: {
-    usedExports: true,
+    splitChunks: {
+      chunks: "all"
+    }
   },
   module: {
     rules: [                          // 规则 数组 说明可以接受多个规则

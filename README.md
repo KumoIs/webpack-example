@@ -209,7 +209,7 @@ class ConsoleLogOnBuildWebpackPlugin {
      } 
 }
 ```
-## 七、核心概念：模式 mode（webpack 4.x）
+## 七、核心概念：模式 mode
 * **作用**
   
     >告诉 webpack 使用相应模式的内置优化 
@@ -251,6 +251,7 @@ app.listen(8099, () => {
 * module: 如果没有添加 module 那么在编译生成 sourceMap 时不会处理 module
 * eval： 生成 sourceMap 的方式
 * sourceMap： 会生成 sourcMap 文件，如果配置了 eval 则会编译到 dist 也就是出口文件中
+**开发环境推荐使用： 'cheap-module-eval-source-map'， 生成环境推荐使用：'cheap-module-source-map'**
  
 >（具体配置查看package.json）
 
@@ -295,14 +296,13 @@ module.exports = {
 
 // index.js
 // 注意：最好是在顶部引入，优先引入它，以免出现报错 或者 失效 的情况
-// 使用方法 entry: ["@babel/polyfill"， "index.js"] 或者 import
+// 使用方法 entry: ["@babel/polyfill"， "index.js"]（官方不推荐） 或者 import
 import '@babel/polyfill'
 ```
 **注意：上面提到 `polyfill` 专门用来处理全局上最新 API 但是当你引入第三方库也出现了这些 API 就会污染内置对象，所以当你在应用库或者ui组件时并不建议使用 `polyfill`，而是使用 `transform-runtime`**
 > 使用 `transform-runtime` 自然是先安装 `yarn add @babel/plugin-transform-runtime`(下面将使用第二种方法配置，上面当 `presets` 同样可以用该方法)，先创建一个 `.babelrc` 文件
 ```javascript
-// .babelrc
-
+// 配置 .babelrc 记住当你使用 transform-runtime 配置 babel 时， 就不用 import polyfill 了
 {
   "plugins": [
     [
@@ -333,8 +333,8 @@ module.exports = {
 // 当你配置了 babel-loader 时，他会让 webpack 打包遇到 js 文件时默认使用 .babelrc 来处理打包
 ```
 
-## 十、Terr Shaking
-> 在 js 使用 utilsjs 某一个方法 可是只使用了一个，而 webpack 将所有 utils 方法都编译出来了，这种是完全多余的，Tree Shaking 解决了这个问题。
+## 十、Tree Shaking 方法按需引入
+> 当你在时候某个 utils 当方法， 你使用类结构且只用了一个方法，而用 webpack 打包过后发现除了使用当那个方法，webpack 还将 utils 里其他所有方法也编译了，导致文件文件过大，Tree Shaking 就是提供类似按需打包当方案。
 ```javascript
 module.exports = {
   optimization: {
@@ -350,3 +350,43 @@ module.exports = {
   // "sideEffects": ['@babel/polyfill']
 }
 ```
+
+## 十一、 Code Splitting 代码分割
+> 当你在 引入一个重量型的库拥，在加上当前项目拥有大量业务逻辑代码，那么打包后会统一打包到你指定到出口文件，会导致文件过多，页面在首次加载时需要读取后，你又修改了某处到代码，导致页面又要重新加载会导致游览器响应特别慢，所以需要代码分割，让项目只更新修改过后的模块。
+
+**实现 Code splitting 方法**
+1. 通过 entry 多入口来引入你所使用的库以及业务逻辑代码模块，来实现代码分割。
+2. 通过 optimization.splitChunks.Chunks = 'all' 来让 webpack 自动实现代码分割。如果你异步引入，需要安装 `@babel/plugin-syntax-dynamic-import` 由于异步引入属于实验型方法，需要babel转换做兼容。
+
+**配置 splitChunksPlugins**
+```javascript
+module.exports = {
+  // ...
+  optimization: {
+    // 如果你配置 splitChunks 为空对象会默认采用下面的配置。（官网的例子）
+    splitChunks: {
+      chunks: 'async',      // 当前配置表示只对异步代码生效， initial： 对同步代码进行分割， all：异步同步都执行分割。
+      minSize: 30000,       // 当文件大于 30000字节 才执行打包
+      minRemainingSize: 0,
+      maxSize: 0,           // 与 minSize 正好相反
+      minChunks: 1,         // Chunk 就好比是一个文件，当配配置表示该 chunk 引入次数是否满足大于等一1
+      maxAsyncRequests: 6,  // 只会帮你打包6个文件，如果超过就不再做分割处理了
+      maxInitialRequests: 4, // 入口的引入文件，只会打包三个 ，多了同样和上面一样不予处理
+      automaticNameDelimiter: '~', // 文件与组之间链接时多链接符号
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,  // 匹配你引入的库，是否在node_modules中
+          priority: -10,        // 优先级                
+          filename: 'vendors.js' // 配置该项后，通过 test 匹配到的文件统一打包到一个名为 vendors.js 到文件中 
+        },
+        default: {
+          priority: -20,
+          reuseExistingChunk: true, // 如果当前块包含已从主捆绑包中拆分出的模块，则将重用该模块，而不是生成新的模块。这可能会影响块的结果文件名。
+          filename: 'common.js'
+        }
+      }
+    }
+  }
+}
+```
+`splitChunksPlugins` 在打包执行代码分割时是先从 `chunks` 属性往下开始匹配是否满足某一项，当满足就会到 `cacheGroups` 组中进行匹配，当分组中都有一项同时满足会根据 `priority` 的优先级进行分割打包。注意代码分割并不是 `webpack` 的概念，在没有 `webpack` 时代都是先规划好代码在进行分开处理，只是后来有了 `webpack` 自动帮你处理。

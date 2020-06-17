@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { add } from './utils/utils';
+import { add, asyncImportComponent } from './utils/utils';
 
 const App = () => {
+
+  useEffect(() => {
+    asyncImportComponent()
+  })
+
   return (
     <div>
       APP
