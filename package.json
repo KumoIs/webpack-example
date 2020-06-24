@@ -1,20 +1,31 @@
 {
   "name": "webpack-example",
   "version": "1.0.0",
+  "sideEffect": ["*.css", "*.less"],
   "main": "index.js",
   "repository": "https://github.com/KumoIs/webpack-example.git",
   "author": "zz",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack --config ./config/webpack.common.js"
+    "dev": "webpack --config ./config/webpack.common.js",
+    "start": "webpack-dev-server --config ./config/webpack.common.js",
+    "build": "webpack --env.production --config ./config/webpack.common.js"
   },
   "dependencies": {
+    "core-js": "3",
     "lodash": "^4.17.15",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.3",
+    "@babel/core": "^7.10.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/polyfill": "^7.10.1",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-react": "^7.10.1",
     "autoprefixer": "^9.8.3",
+    "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.6.0",
     "csv-loader": "^3.0.3",
@@ -22,9 +33,13 @@
     "html-webpack-plugin": "^4.3.0",
     "less-loader": "^6.1.2",
     "mini-css-extract-plugin": "^0.9.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "style-loader": "^1.2.1",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^4.1.0",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^4.2.2",
     "xml-loader": "^1.2.1"
   }
 }

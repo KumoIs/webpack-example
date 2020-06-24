@@ -1,44 +1,51 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const merge = require('webpack-merge');
 
-const path = require('path');
+const prodConfig = require('./webpack.prod.js');
+const devConfig = require('./webpack.dev.js');
 
-module.exports = {
-  mode: 'development',
+const resolve = require('path').resolve;
+
+const commonConfig = {
   entry: {
     main: './src/index.js'
   },
-  output: {
-    filename: "[name].[contenthash].js",
-    chunkFilename: "[name].[contenthash].chunk,js",
-    path: path.resolve(__dirname, '..', 'dist'),
+  optimization: {
+    usedExports: true,
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+           test: /[\\/]node_modules[\\/]/,
+           filename: '[name].[contenthash].js',
+        },
+      }
+    },
+  },
+  resolve: {
+    extensions: ['.js', '.tsx', '.ts'],
+    alias: {
+      '@': resolve('src'),
+      utils: resolve('src/utils'),
+      pages: resolve('src/pages'),
+      components: resolve('src/components'),
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
       title: "react webpack",
       template: "src/index.html"
     }),
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-      chunkFilename: '[name].[contenthash].chunk.css'
-    }),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
   ],
   module: {
     rules: [
       {
-        test: /\.css$/i,
-        use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: {
-              importLoaders: 1,
-            }
-          },
-          'postcss-loader'
-        ]
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        include: resolve(__dirname, 'src'),
+        loader: 'babel-loader'
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
@@ -46,8 +53,8 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              limit: 8192,
-              name: '[name]_[hash].[ext]',
+              limit: 10 * 1024,
+              name: '[name].[hash:5].[ext]',
               outputPath: 'images/'
             },
           }
@@ -57,8 +64,9 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
         loader: 'file-loader',
         options: {
-          name: '[name]_[hash].[ext]',
-          outputPath: 'fonts/'
+          name: '[name].[hash:5].min.[ext]',
+          outputPath: 'fonts/',
+          publicPath: 'fonts/'
         }
       },
       {
@@ -75,4 +83,12 @@ module.exports = {
       },
     ]
   }
+}
+
+module.exports = (env) => {
+  if (env && env.production) {
+    return merge(commonConfig, prodConfig)
+  }
+
+  merge(commonConfig, devConfig)
 }

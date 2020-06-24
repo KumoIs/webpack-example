@@ -91,8 +91,8 @@ module.exports = {
 ```
 
 四、 配置 webpack plugins
-> 配置 plugins 主要有 抽离css让它不会被webpack打包到输出文件里、打包生成html、打包时自动删除dist(下面会按这些描述插件的顺序来进行安装)、 自动增加兼容css前缀；
-> `yarn add -D mini-css-extract-plugin html-webpack-plugin clean-webpack-plugin autoprefixer`
+> 配置 plugins 主要有 抽离css让它不会被webpack打包到输出文件里、打包生成html、打包时自动删除dist(下面会按这些描述插件的顺序来进行安装)、 自动增加兼容css前缀、 压缩css；
+> `yarn add -D mini-css-extract-plugin html-webpack-plugin clean-webpack-plugin autoprefixer optimize-css-assets-webpack-plugin`
 > 修改输出文件的配置， 增加了 plugins 配置，新增文件 postcss.config.js
 ```javascript
 const HtmlWebpackPlugin = require('html-webpack-plugin');

@@ -400,7 +400,7 @@ function hander () {
 }
 ```
 
-// webpackPrefetch： 等待你核心代码加载完以后，等页面宽带空闲以后再去加载。 webpackPreload： 和核心代码一起加载。
+// webpackPrefetch： 等待你核心代码加载完以后，等页面宽带空闲以后再去加载。 webpackPreload： 和核心代码一起加载。 webpackChunkName: 作用与打包第三方库后的文件名
 
 
 十二、Shimming 填隙
