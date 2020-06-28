@@ -1,4 +1,4 @@
-const resolve = require('path').resolve;
+const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
@@ -6,7 +6,7 @@ module.exports = {
   devtool: 'inline-cheap-module-source-map',
   devServer: {
     contentBase: './dist',
-    port: '9001',
+    port: '9004',
     open: true,
     host: '0.0.0.0',
     hot: true,
@@ -15,18 +15,15 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
   ],
-  entry: {
-    main: './src/index.js'
-  },
   output: {
     filename: "[name].js",
     chunkFilename: "[name].chunk.js",
-    path: resolve(__dirname, '..', 'dist'),
+    path: path.resolve(__dirname, '..', 'dist'),
   },
   module: {
     rules: [
       {
-        test: /\.css$/i,
+        test: /\.(c|le)ss$/i,
         use: [
           'style-loader',
           {

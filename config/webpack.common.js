@@ -1,13 +1,58 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const AddAssetWebpackPlugin = require('add-asset-html-webpack-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const chalk = require('chalk');
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 
 const prodConfig = require('./webpack.prod.js');
 const devConfig = require('./webpack.dev.js');
 
-const resolve = require('path').resolve;
+const path = require('path');
+const fs = require('fs');
 
-const commonConfig = {
+const smp = new SpeedMeasurePlugin();
+
+const plugins = [
+  new CleanWebpackPlugin(),
+  new HtmlWebpackPlugin({
+    title: "react webpack",
+    template: "src/index.html"
+  }),
+  new ProgressBarPlugin({
+    format: 'build [:bar]' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
+    clear: false,
+    width: '60',
+  }),
+]
+
+const dllFiles = fs.readdirSync(path.resolve(__dirname, '..', 'dll'));
+dllFiles.forEach(file => {
+  if (/.*\.dll.js/.test(file)) {
+    plugins.push(new AddAssetWebpackPlugin({
+      filepath: path.resolve(__dirname, "..", "dll", file)
+    }))
+  }
+
+  if (/.*\.manifest.js/.test(file)) {
+    plugins.push(new webpack.DllReferencePlugin({
+      manifest: path.resolve(__dirname, "..", "dll", file)
+    }))
+  }
+})
+
+plugins.push(new ProgressBarPlugin({
+  format:
+    '  build [:bar] ' +
+    chalk.green.bold(':percent') +
+    ' (:elapsed seconds)',
+  clear: false,
+  width: '60',
+}),)
+
+const commonConfig = smp.wrap({
   entry: {
     main: './src/index.js'
   },
@@ -24,28 +69,21 @@ const commonConfig = {
     },
   },
   resolve: {
-    extensions: ['.js', '.tsx', '.ts'],
+    extensions: ['.js', '.jsx'],
+    mainFiles: ['index'],
     alias: {
-      '@': resolve('src'),
-      utils: resolve('src/utils'),
-      pages: resolve('src/pages'),
-      components: resolve('src/components'),
+      "@": path.resolve(__dirname, ".."),
+      "@src": path.resolve(__dirname, "..", "src"),
+      "@pages": path.resolve(__dirname, "..", "src/pages")
     },
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: "react webpack",
-      template: "src/index.html"
-    }),
-    new CleanWebpackPlugin(),
-  ],
+  plugins,
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        include: resolve(__dirname, 'src'),
-        loader: 'babel-loader'
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: 'babel-loader'
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
@@ -62,12 +100,16 @@ const commonConfig = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[hash:5].min.[ext]',
-          outputPath: 'fonts/',
-          publicPath: 'fonts/'
-        }
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[hash:5].min.[ext]',
+              outputPath: 'fonts/',
+              publicPath: 'fonts/'
+            }
+          }
+        ]
       },
       {
         test: /\.(csv|tsv)$/,
@@ -83,12 +125,12 @@ const commonConfig = {
       },
     ]
   }
-}
+})
 
 module.exports = (env) => {
   if (env && env.production) {
     return merge(commonConfig, prodConfig)
+  } else {
+    return merge(commonConfig, devConfig)
   }
-
-  merge(commonConfig, devConfig)
 }

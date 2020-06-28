@@ -1,6 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
-const resolve = require('path').resolve;
+const path = require('path');
 
 module.exports = {
   mode: 'production',
@@ -8,7 +8,7 @@ module.exports = {
   output: {
     filename: "[name].[contenthash].js",
     chunkFilename: "[name].[contenthash].chunk.js",
-    path: resolve(__dirname, '..', 'dist'),
+    path: path.resolve(__dirname, '..', 'dist'),
   },
   plugins: [
     new MiniCssExtractPlugin({
@@ -20,7 +20,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/i,
+        test: /\.(c|le)ss$/i,
         use: [
           MiniCssExtractPlugin.loader,
           {
