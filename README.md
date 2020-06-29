@@ -1,5 +1,5 @@
 ## 什么是 webpack 以及 安装和使用
->webpack 是一个模块打包机，将根据文件间的依赖关系对其进行静态分析，然后将这些模块按指定规则生成静态资源当 webpack 处理程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle
+    >webpack 是一个模块打包机，将根据文件间的依赖关系对其进行静态分析，然后将这些模块按指定规则生成静态资源当 webpack 处理程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle
 
 * **主要承担如下功能：**
     1. 打包：将多个文件 打包成 一个文件，减少服务器压力和下载带宽
@@ -22,9 +22,9 @@
         > webpack 使用异步 I/O 、多级缓存提高运行效率，使得 webpack 以难以令人置信的速度 快速增量编译
 
 * **安装 webpack**
-> 项目初始化，安装 webpack
-`yarn init`
-`yarn add webpack webpack-cli`
+    > 项目初始化，安装 webpack
+    `yarn init`
+    `yarn add webpack webpack-cli`
 
 ## 核心概念：入口 entry
 * **作用**
@@ -296,9 +296,7 @@ module.exports = merge(prodConfig, {
 
 ## 使用 babel
 * **配置 babel**
-> babel 可以将js中 `ES6` 在打包后编译为 `ES5` 让其可以兼容老的游览器比如：ie， 首先需要安装 babel-loader 和 @babel/core
-
-`yarn add -D babel-loader @babel/core @babel/preset-env @babel/polyfill @babel/plugin-syntax-dynamic-import @babel/preset-react`
+    > babel 可以将js中 `ES6` 在打包后编译为 `ES5` 让其可以兼容老的游览器比如：ie， 首先需要安装`yarn add -D babel-loader @babel/core @babel/preset-env @babel/polyfill @babel/plugin-syntax-dynamic-import @babel/preset-react`
 
 1. @babel/core 可以让 `webpack` 读取js内容并将其转换成 **`AST抽象语法树`** 最后转化为 `ES5`
 
@@ -337,7 +335,7 @@ module.exports = {
 *注意：上面提到 `polyfill` 用来转换新的js的方法，列如：Array。但如果引入的库也有一个与 Array 的方法一样的变量名，会造成全局污染。建议当封装自己 **js库** 或是 **ui库** 时用 `transform-runtime`。*
 
 * **配置 transform-runtime**
-> 安装 `yarn add -D @babel/plugin-transform-runtime`
+    > 安装 `yarn add -D @babel/plugin-transform-runtime`
 ```json
 {
   "plugins": [
@@ -356,7 +354,7 @@ module.exports = {
 ## 优化 webpack 打包文件大小
 
 * **Tree Shaking 按需引入**
-> 当你在使用自己封装的工具类 `utils` 中某一个方法， 但你只使用了其中的一个方法，而 `webpack` 在帮你打包时却把庞大的 `utils` 全部打包了进去造成文件非常大，**Tree Shaking(翻译：摇树) 可以理解为 `Tree shaking` 帮你摇掉了你不需要的方法。**
+    > 当你在使用自己封装的工具类 `utils` 中某一个方法， 但你只使用了其中的一个方法，而 `webpack` 在帮你打包时却把庞大的 `utils` 全部打包了进去造成文件非常大，**Tree Shaking(翻译：摇树) 可以理解为 `Tree shaking` 帮你摇掉了你不需要的方法。**
 ```javascript
 // 在开发模式中 Tree Shaking 是默认开启的。所以无需进行配置。
 // webpack.dev.js
@@ -410,8 +408,8 @@ module.exports = {
 ## 优化 webpack 打包速度
 
 * **配置 Dll**
-> `dll` 是通过提前安装你所使用的库，之后再去打包会通过从 `dll` 去拿如果没有再去 `node_module`
-> 创建 webpack.dll.js 文件
+    > `dll` 是通过提前安装你所使用的库，之后再去打包会通过从 `dll` 去拿如果没有再去 `node_module`
+    > 创建 webpack.dll.js 文件
 ```javascript
 // webpack.dll.js
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -456,11 +454,11 @@ module.exports = {
 ```
 
 * **plugins 优化**
-> 通过使用 thread-loader 或是 happypack 来进行多线程打包（官方目前主推 thread-loader， happypack 不再进行维护更新）（楼主用的 thread-loader)
-> `parallel-webpack-plugin` 多页面项目时使用。多线程打包。
+    > 通过使用 thread-loader 或是 happypack 来进行多线程打包（官方目前主推 thread-loader， happypack 不再进行维护更新）（楼主用的 thread-loader)
+    > `parallel-webpack-plugin` 多页面项目时使用。多线程打包。
 
 ## 魔法注释
-> 通过 魔法注释 来使用，参考下面案例。
+    > 通过 魔法注释 来使用，参考下面案例。
 ```javascript
 // webpackPrefetch： 等待你核心代码加载完以后，等页面宽带空闲以后再去加载。 webpackPreload： 和核心代码一起加载。 webpackChunkName: 作用与打包第三方库后的文件名
 function hander () {
@@ -472,7 +470,7 @@ function hander () {
 ```
 
 ## Shimming 填隙
-> 当你 webpack 监测你到模块中使用到一个 _ 会自动帮你引入你预设的库。
+    > 当你 webpack 监测你到模块中使用到一个 _ 会自动帮你引入你预设的库。
 ```javascript
 const webpack = require('webpack');
 module.exports = {
