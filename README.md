@@ -73,7 +73,7 @@
         //__filename:返回当前模块的文件名;
         output:{
             filename:  'main.js',
-            path: path.resolve(_dirname,'dist')
+            path: path.resolve(__dirname, 'dist')
         }
     }
 ```
@@ -166,7 +166,7 @@ module.exports = {
 
 ## 线上与开发环境
 * **线上与线下**
-    >当在配置开发环境是可以安装 `webpack-dev-servet` 实现当代码修改后，页面会随即刷新，还可以使用 `webpack-dev-middlware 和 express` 实现 node 当生产环境。当你使用 `webpack-dev-servet` 打包后并不会为你生成 `dist`，因为 `webpack-dev-servet` 将文件打包到了内存中，来提供效率。
+    >当在配置开发环境是可以安装 `webpack-dev-servet` 实现当代码修改后，页面会随即刷新，还可以使用 `webpack-dev-middlware 和 express` 实现 node 当生产环境。当你使用 `webpack-dev-servet` 打包后并不会为你生成 `dist`，因为 `webpack-dev-servet` 将文件打包到了内存中，来提高效率。
     >线上环境不需要这种 `webpack-dev-servet` 来帮你开启一个服务，所以往往会将其分开配置。为了节省配置的复杂性和重复性，会需要安装 'yarn add -D webpack-merge'
     >Hot Module Replacement(热模块更换): 页面数据在不更改的情况下，只更新你修改后 css 样式。
     > devtools（sourceMap webpack中专门用来获取错误的配置方案） 一般用来处理打包处理报错结果的，根据不同的配置会出现不同的打包速度。
@@ -205,7 +205,7 @@ const devConfig = {
                {
                     test: /\.(c|le)ss$/i,
                     use: [
-                        'style-laoder',
+                        'style-loader',
                         {
                             loader: "css-loader",
                             options: {
@@ -480,5 +480,37 @@ module.exports = {
       _cloneDeep: ['lodash', 'cloneDeep']
     })
   ]
+}
+```
+
+## 自定义loader
+> loader 其实本身也是函数，但是不能使用箭头函数，当你使用自定义 `loader` 时，其this指向了 `webpack` 的 `loader`, 可以在官网中查看 loader API
+> webpack 官网提供了一个 `loader-utils` 来更好的处理，自定loader中的 `this`
+> webpack 配置属性 `resolveLoaders.modules = [ 'node_module', './loaders']` 这里配置主要解决，在使用多个自定义的loader时，可以像第三方loader一样，直接像 `babel-loader` 一样是用，这块配置表示帮你去先去node_module里去找如果没有自定义loader， 那就去 loaders 里找。
+
+```javascript
+const loaderUtils = require('loader-utils');
+
+// 接受一个参数，表示文件本身的内容。那如果想拿到 options 中的内容的话，可以通过 this 来获取比如 name 是通过 this.options.name
+// 使用了 loader-utils 可以使用 loader-utils 提供的 this.callback 来返回
+/*
+this.callback(
+ err: Error | null,         // 错误
+ content: string | Buffer,  // 返回的内容
+ sourceMap?: SourceMap,
+ meta?: any                 // 自己想要传递的内容
+)
+*/
+
+module.exports = function(source) {
+  const  options = loaderUtils.getOtions(this);
+  const callback = this.async();    // 想使用异步函数
+
+  console.log(this)
+  setTimeout(() => {
+    console.log(source)
+    callback(null, source)          // return 异步结果
+  }, 1000)
+  return source
 }
 ```
