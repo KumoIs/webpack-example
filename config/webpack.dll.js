@@ -5,7 +5,9 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    react: ['react', 'react-dom','react-router-dom', '@loadable/component' ]
+    reactDll: ['react', 'react-dom','react-router-dom', '@loadable/component' ],
+    reduxDll: ['redux', 'react-redux', 'redux-logger', 'redux-thunk'],
+    vendorsDll: ['@babel/polyfill', 'chalk'],
   },
   output: {
     filename: "[name].dll.js",

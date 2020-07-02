@@ -1,14 +1,19 @@
-import React, { lazy, Suspense } from 'react';
-import {HashRouter as Router, Route, Switch} from 'react-router-dom';
+import React from 'react';
+import { HashRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { hot } from 'react-hot-loader';
 
 import RouterConfig from './routes/index';
+import store from '@store';
 
 const App = props => {
   return (
     <Router>
-      <RouterConfig />
+      <Provider store={store}>
+        <RouterConfig />
+      </Provider>
     </Router>
   )
 }
 
-export default App
+export default hot(module)(App)

@@ -2,7 +2,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const AddAssetWebpackPlugin = require('add-asset-html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const chalk = require('chalk');
 const webpack = require('webpack');
@@ -13,8 +12,6 @@ const devConfig = require('./webpack.dev.js');
 
 const path = require('path');
 const fs = require('fs');
-
-const smp = new SpeedMeasurePlugin();
 
 const plugins = [
   new CleanWebpackPlugin(),
@@ -32,7 +29,7 @@ const plugins = [
   }),
   new BundleAnalyzerPlugin({
     analyzerMode: 'static',
-    openAnalyzer: true,
+    openAnalyzer: false,
     logLevel: 'info'
   })
 ]
@@ -52,16 +49,7 @@ dllFiles.forEach(file => {
   }
 })
 
-plugins.push(new ProgressBarPlugin({
-  format:
-    '  build [:bar] ' +
-    chalk.green.bold(':percent') +
-    ' (:elapsed seconds)',
-  clear: false,
-  width: '60',
-}),)
-
-const commonConfig = smp.wrap({
+const commonConfig = {
   entry: {
     main: './src/index.js'
   },
@@ -71,8 +59,8 @@ const commonConfig = smp.wrap({
       chunks: 'all',
       cacheGroups: {
         vendor: {
-           test: /[\\/]node_modules[\\/]/,
-           filename: '[name].[contenthash].js',
+          test: /[\\/]node_modules[\\/]/,
+          filename: '[name].[contenthash].js',
         },
       }
     },
@@ -83,7 +71,8 @@ const commonConfig = smp.wrap({
     alias: {
       "@": path.resolve(__dirname, ".."),
       "@src": path.resolve(__dirname, "..", "src"),
-      "@pages": path.resolve(__dirname, "..", "src/pages")
+      "@pages": path.resolve(__dirname, "..", "src/pages"),
+      "@store": path.resolve(__dirname, "..", "src/store")
     },
   },
   plugins,
@@ -162,10 +151,10 @@ const commonConfig = smp.wrap({
       },
     ]
   }
-})
+}
 
-module.exports = (env) => {
-  if (env && env.production) {
+module.exports = () => {
+  if (process.env.NODE_ENV === 'production') {
     return merge(commonConfig, prodConfig)
   } else {
     return merge(commonConfig, devConfig)

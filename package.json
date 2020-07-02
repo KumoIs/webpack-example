@@ -12,15 +12,9 @@
   "scripts": {
     "dev": "webpack --config ./config/webpack.common.js",
     "start": "webpack-dev-server --config ./config/webpack.common.js",
-    "build": "webpack --env.production --config ./config/webpack.common.js",
+    "build": "NODE_ENV=production webpack --config ./config/webpack.common.js",
     "prod": "http-server -o dist",
     "build:dll": "webpack --config ./config/webpack.dll.js"
-  },
-  "moudleNameMapper": {
-    "@": "<rootDir>/src",
-    "utils": "<rootDir>/src/utils",
-    "pages": "<rootDir>/src/pages",
-    "components": "<rootDir>/src/component"
   },
   "dependencies": {
     "@babel/polyfill": "^7.10.1",
@@ -29,12 +23,18 @@
     "core-js": "3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-hot-loader": "^4.12.21",
+    "react-redux": "^7.2.0",
     "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.3",
     "@babel/core": "^7.10.3",
+    "@babel/plugin-proposal-decorators": "^7.10.3",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-transform-object-assign": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
