@@ -6,7 +6,10 @@ import { createLogger } from 'redux-logger';
 import rootReduces from "@store/rootReduces";
 
 // 启动插件
-const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose
+const composeEnhancers = typeof window === 'object'
+  && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+  : compose
 
 const middlewares = [
   thunkMiddleware,

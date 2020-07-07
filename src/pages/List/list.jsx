@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import list, { listAction } from "@pages/List/module";
+import { listAction } from "@pages/List/module";
 
 const List = props => {
   const [i , setI] = useState(0)
@@ -14,6 +14,7 @@ const List = props => {
   console.log(i)
   return (
     <div>
+      List
       {props.list.list}
       <button onClick={() => props.updList('333333')}>修改</button>
     </div>

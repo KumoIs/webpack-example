@@ -60,7 +60,7 @@ const commonConfig = {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          filename: '[name].[contenthash].js',
+          filename: 'vendor.[contenthash].js',
         },
       }
     },
@@ -72,7 +72,7 @@ const commonConfig = {
       "@": path.resolve(__dirname, ".."),
       "@src": path.resolve(__dirname, "..", "src"),
       "@pages": path.resolve(__dirname, "..", "src/pages"),
-      "@store": path.resolve(__dirname, "..", "src/store")
+      "@store": path.resolve(__dirname, "..", "src/store"),
     },
   },
   plugins,
