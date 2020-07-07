@@ -1,0 +1,27 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 2
+indent_style = space
+insert_final_newline = false
+max_line_length = 120
+tab_width = 2
+
+[*.css]
+indent_size = 4
+tab_width = 4
+
+[*.less]
+tab_width = 4
+
+[*.rt]
+indent_size = 4
+tab_width = 4
+
+[*.styl]
+tab_width = 4
+
+[{*.har,*.jsb2,*.jsb3,*.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,bowerrc,jest.config}]
+tab_width = 4

@@ -24,11 +24,9 @@ const SecurityLayout = lazy(() => import("../layout/SecurityLayout"), suspense);
 export default [
   {
     component: BasicLayout,
-    path: '/',
     routes: [
       {
         component: SecurityLayout,
-        path: '/',
         routes: [
           {
             path: '/',
