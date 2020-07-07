@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { renderRoutes } from "react-router-config";
 
 import './app.less';
 
@@ -15,7 +16,7 @@ const SecurityLayout = props => {
       <div className="main">
         <div className="middle">
           <div className="content">
-            {props.children}
+            {renderRoutes(props.route.routes)}
           </div>
         </div>
         <div className="side">

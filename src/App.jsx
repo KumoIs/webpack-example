@@ -1,18 +1,21 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
-import { HashRouter as Router } from 'react-router-dom';
+import {HashRouter, Switch} from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { renderRoutes } from 'react-router-config';
 
-import RouterConfig from './routes/index';
+import routes from './routes/routes';
 import store from "@store";
 
-const App = props => {
+const App = () => {
   return (
-    <Router>
-      <Provider store={store}>
-        <RouterConfig/>
-      </Provider>
-    </Router>
+    <Provider store={store}>
+      <HashRouter>
+        <Switch>
+          {renderRoutes(routes)}
+        </Switch>
+      </HashRouter>
+    </Provider>
   )
 }
 
