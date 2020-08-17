@@ -7,6 +7,20 @@ const chalk = require('chalk');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 
+const threadLoader = require('thread-loader');
+
+threadLoader.warmup({
+  // pool options, like passed to loader options
+  // must match loader options to boot the correct pool
+}, [
+  // modules to load
+  // can be any module, i. e.
+  'babel-loader',
+  'css-loader',
+  'less-loader',
+]);
+
+
 const prodConfig = require('./webpack.prod.js');
 const devConfig = require('./webpack.dev.js');
 
@@ -16,8 +30,9 @@ const fs = require('fs');
 const plugins = [
   new CleanWebpackPlugin(),
   new HtmlWebpackPlugin({
-    title: "react webpack",
+    title: "webpack架构",
     template: "src/index.html",
+    filename: 'index.html',
     minify: {
       removeAttributeQuotes: true, //压缩 去掉引号
     },
@@ -60,8 +75,8 @@ const commonConfig = {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          filename: 'vendor.[contenthash].js',
-        },
+          // filename: 'vendor.[contenthash].js',
+        }
       }
     },
   },
@@ -73,6 +88,9 @@ const commonConfig = {
       "@src": path.resolve(__dirname, "..", "src"),
       "@pages": path.resolve(__dirname, "..", "src/pages"),
       "@store": path.resolve(__dirname, "..", "src/store"),
+      "@styles": path.resolve(__dirname, "..", "src/styles"),
+      "@assets": path.resolve(__dirname, "..", "src/assets"),
+      "@components": path.resolve(__dirname, "..", "src/components")
     },
   },
   plugins,
@@ -105,7 +123,7 @@ const commonConfig = {
 
               // 池(pool)的名称
               // 可以修改名称来创建其余选项都一样的池(pool)
-              name: "my-pool"
+              name: "my-pool-js"
             }
           },
           'babel-loader'

@@ -1,13 +1,14 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 const path = require('path');
+const lessConfig = require('./lessConfig');
 
 module.exports = {
   mode: 'production',
   devtool: 'cheap-module-source-map',
   output: {
-    filename: "[name].[contenthash].js",
-    chunkFilename: "[name].[contenthash].chunk.js",
+    filename: "js/[name].[contenthash].js",
+    chunkFilename: "js/[name].[contenthash].chunk.js",
     path: path.resolve(__dirname, '..', 'dist'),
   },
   plugins: [
@@ -30,7 +31,12 @@ module.exports = {
             }
           },
           'postcss-loader',
-          'less-loader'
+          {
+            loader: "less-loader",
+            options: {
+              lessOptions: lessConfig
+            }
+          }
         ]
       },
     ]

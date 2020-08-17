@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const lessConfig = require('./lessConfig');
 
 module.exports = {
   mode: 'development',
@@ -11,6 +12,13 @@ module.exports = {
     host: '0.0.0.0',
     hot: true,
     hotOnly: true,
+    overlay: true,
+    proxy: {
+      '/api': {
+        target: 'http://192.168.16.178:11220',
+        pathRewrite: {'^/api' : ''}
+      }
+    }
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -33,7 +41,12 @@ module.exports = {
             }
           },
           'postcss-loader',
-          'less-loader'
+          {
+            loader: "less-loader",
+            options: {
+              lessOptions: lessConfig
+            }
+          }
         ]
       },
     ]

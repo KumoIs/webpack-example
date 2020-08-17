@@ -16,6 +16,11 @@
         "loose": true
       }
     ],
+    ["import", {
+      "libraryName": "antd",
+      "libraryDirectory": "es",
+      "style": true
+    }],
     "@babel/plugin-syntax-dynamic-import",
     "@babel/plugin-transform-object-assign",
     "react-hot-loader/babel"
