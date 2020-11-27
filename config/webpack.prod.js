@@ -1,22 +1,21 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
-const lessConfig = require('./lessConfig');
 
 module.exports = {
   mode: 'production',
   devtool: 'cheap-module-source-map',
   output: {
-    filename: "js/[name].[contenthash].js",
-    chunkFilename: "js/[name].[contenthash].chunk.js",
+    filename: 'js/[name].[contenthash].js',
+    chunkFilename: 'js/[name].[contenthash].chunk.js',
     path: path.resolve(__dirname, '..', 'dist'),
   },
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'style/[name].[contenthash].css',
-      chunkFilename: 'style/[name].[contenthash].chunk.css'
+      chunkFilename: 'style/[name].[contenthash].chunk.css',
     }),
-    new OptimizeCssAssetsWebpackPlugin()
+    new OptimizeCssAssetsWebpackPlugin(),
   ],
   module: {
     rules: [
@@ -25,20 +24,19 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               importLoaders: 2,
-            }
+            },
           },
           'postcss-loader',
           {
-            loader: "less-loader",
+            loader: 'less-loader',
             options: {
-              lessOptions: lessConfig
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
-    ]
-  }
-}
+    ],
+  },
+};

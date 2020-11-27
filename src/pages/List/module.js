@@ -1,19 +1,19 @@
 const namespace = 'list';
 
 export const type = {
-  UPD: namespace + '/UPD',
-}
+  UPD: `${namespace}/UPD`,
+};
 
 const defaultState = {
-  list: "测试 redux"
-}
+  list: '测试 redux',
+};
 
-function list (state = defaultState, action) {
+function list(state = defaultState, action) {
   switch (action.type) {
     case type.UPD:
       return {
         ...state,
-        list: action.data
+        list: action.data,
       };
     default:
       return state;
@@ -26,5 +26,5 @@ export const listAction = {
   upd: (data) => ({
     type: type.UPD,
     data,
-  })
-}
+  }),
+};

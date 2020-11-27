@@ -1,31 +1,30 @@
 const path = require('path');
 const webpack = require('webpack');
-const lessConfig = require('./lessConfig');
 
 module.exports = {
   mode: 'development',
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'eval-cheap-module-source-map',
   devServer: {
     contentBase: './dist',
     port: '9004',
     open: true,
-    host: '0.0.0.0',
+    host: 'localhost',
     hot: true,
     hotOnly: true,
     overlay: true,
     proxy: {
       '/api': {
         target: 'http://192.168.16.178:11220',
-        pathRewrite: {'^/api' : ''}
-      }
-    }
+        pathRewrite: { '^/api': '' },
+      },
+    },
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
   ],
   output: {
-    filename: "[name].js",
-    chunkFilename: "[name].chunk.js",
+    filename: 'js/[name].js',
+    chunkFilename: 'js/[name].chunk.js',
     path: path.resolve(__dirname, '..', 'dist'),
   },
   module: {
@@ -35,20 +34,19 @@ module.exports = {
         use: [
           'style-loader',
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               importLoaders: 2,
-            }
+            },
           },
           'postcss-loader',
           {
-            loader: "less-loader",
+            loader: 'less-loader',
             options: {
-              lessOptions: lessConfig
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
-    ]
-  }
-}
+    ],
+  },
+};

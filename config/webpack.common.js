@@ -2,10 +2,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const AddAssetWebpackPlugin = require('add-asset-html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const chalk = require('chalk');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 const threadLoader = require('thread-loader');
 
@@ -20,53 +20,54 @@ threadLoader.warmup({
   'less-loader',
 ]);
 
-
-const prodConfig = require('./webpack.prod.js');
-const devConfig = require('./webpack.dev.js');
-
 const path = require('path');
 const fs = require('fs');
+const prodConfig = require('./webpack.prod.js');
+const devConfig = require('./webpack.dev.js');
 
 const plugins = [
   new CleanWebpackPlugin(),
   new HtmlWebpackPlugin({
-    title: "webpack架构",
-    template: "src/index.html",
+    title: 'webpack架构',
+    template: 'src/index.html',
     filename: 'index.html',
     minify: {
-      removeAttributeQuotes: true, //压缩 去掉引号
+      removeAttributeQuotes: true, // 压缩 去掉引号
     },
   }),
   new ProgressBarPlugin({
-    format: 'build [:bar]' + chalk.green.bold(':percent') + ' (:elapsed seconds)',
+    format: `build [:bar]${chalk.green.bold(':percent')} (:elapsed seconds)`,
     clear: false,
     width: '60',
   }),
   new BundleAnalyzerPlugin({
-    analyzerMode: 'static',
     openAnalyzer: false,
-    logLevel: 'info'
-  })
-]
+    logLevel: 'info',
+    analyzerMode: 'server',
+    analyzerHost: '127.0.0.1',
+    analyzerPort: 1270,
+  }),
+];
 
 const dllFiles = fs.readdirSync(path.resolve(__dirname, '..', 'dll'));
-dllFiles.forEach(file => {
+console.log(dllFiles);
+dllFiles.forEach((file) => {
   if (/.*\.dll.js/.test(file)) {
     plugins.push(new AddAssetWebpackPlugin({
-      filepath: path.resolve(__dirname, "..", "dll", file)
-    }))
+      filepath: path.resolve(__dirname, '..', 'dll', file),
+    }));
   }
 
   if (/.*\.manifest.js/.test(file)) {
     plugins.push(new webpack.DllReferencePlugin({
-      manifest: path.resolve(__dirname, "..", "dll", file)
-    }))
+      manifest: path.resolve(__dirname, '..', 'dll', file),
+    }));
   }
-})
+});
 
 const commonConfig = {
   entry: {
-    main: './src/index.js'
+    main: './src/index.js',
   },
   optimization: {
     usedExports: true,
@@ -76,21 +77,21 @@ const commonConfig = {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
           // filename: 'vendor.[contenthash].js',
-        }
-      }
+        },
+      },
     },
   },
   resolve: {
     extensions: ['.js', '.jsx'],
     mainFiles: ['index'],
     alias: {
-      "@": path.resolve(__dirname, ".."),
-      "@src": path.resolve(__dirname, "..", "src"),
-      "@pages": path.resolve(__dirname, "..", "src/pages"),
-      "@store": path.resolve(__dirname, "..", "src/store"),
-      "@styles": path.resolve(__dirname, "..", "src/styles"),
-      "@assets": path.resolve(__dirname, "..", "src/assets"),
-      "@components": path.resolve(__dirname, "..", "src/components")
+      '@': path.resolve(__dirname, '..'),
+      '@src': path.resolve(__dirname, '..', 'src'),
+      '@pages': path.resolve(__dirname, '..', 'src/pages'),
+      '@store': path.resolve(__dirname, '..', 'src/store'),
+      '@styles': path.resolve(__dirname, '..', 'src/styles'),
+      '@assets': path.resolve(__dirname, '..', 'src/assets'),
+      '@components': path.resolve(__dirname, '..', 'src/components'),
     },
   },
   plugins,
@@ -101,7 +102,7 @@ const commonConfig = {
         exclude: /node_modules/,
         use: [
           {
-            loader: "thread-loader",
+            loader: 'thread-loader',
             // 有同样配置的 loader 会共享一个 worker 池(worker pool)
             options: {
               // 产生的 worker 的数量，默认是 cpu 的核心数
@@ -123,11 +124,11 @@ const commonConfig = {
 
               // 池(pool)的名称
               // 可以修改名称来创建其余选项都一样的池(pool)
-              name: "my-pool-js"
-            }
+              name: 'my-pool-js',
+            },
           },
-          'babel-loader'
-        ]
+          'babel-loader',
+        ],
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
@@ -137,10 +138,10 @@ const commonConfig = {
             options: {
               limit: 10 * 1024,
               name: '[name].[hash:5].[ext]',
-              outputPath: 'images/'
+              outputPath: 'images/',
             },
-          }
-        ]
+          },
+        ],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
@@ -150,10 +151,10 @@ const commonConfig = {
             options: {
               name: '[name].[hash:5].min.[ext]',
               outputPath: 'fonts/',
-              publicPath: 'fonts/'
-            }
-          }
-        ]
+              publicPath: 'fonts/',
+            },
+          },
+        ],
       },
       {
         test: /\.(csv|tsv)$/,
@@ -167,14 +168,13 @@ const commonConfig = {
           'xml-loader',
         ],
       },
-    ]
-  }
-}
+    ],
+  },
+};
 
 module.exports = () => {
   if (process.env.NODE_ENV === 'production') {
-    return merge(commonConfig, prodConfig)
-  } else {
-    return merge(commonConfig, devConfig)
+    return merge(commonConfig, prodConfig);
   }
-}
+  return merge(commonConfig, devConfig);
+};

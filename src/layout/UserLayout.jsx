@@ -1,18 +1,16 @@
-import React from "react";
+import React from 'react';
 
-const userLayout = props => {
-  return (
+const userLayout = (props) => (
+  <div>
+    <div>Header</div>
     <div>
-      <div>Header</div>
-      <div>
-        --------------------------
-        这是一个登录框
-      </div>
-      <div>
-        {props.children}
-      </div>
+      --------------------------
+      这是一个登录框
     </div>
-  )
-}
+    <div>
+      {props.children}
+    </div>
+  </div>
+);
 
-export default userLayout
+export default userLayout;
