@@ -7,20 +7,18 @@ const Home = (props) => {
     props.dispatch({
       type: 'global/test',
     });
-    props.dispatch(push({
-      pathname: '/list',
-      search: '?sadsad=asdaskodjo',
-      query: {
-        name: '123',
-        dd: '1q23123',
-      },
-    }));
+    props.dispatch(
+      push({
+        pathname: '/list',
+        search: '?sadsad=asdaskodjo',
+        query: {
+          name: '123',
+          dd: '1q23123',
+        },
+      })
+    );
   }, []);
-  return (
-    <div>
-      Home Component
-    </div>
-  );
+  return <div>Home Component</div>;
 };
 
 export default connect(({ global, router }) => ({

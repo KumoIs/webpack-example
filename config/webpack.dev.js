@@ -15,9 +15,7 @@ module.exports = {
     overlay: true,
     proxy,
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
   output: {
     filename: 'js/[name].js',
     chunkFilename: 'js/[name].chunk.js',
@@ -38,8 +36,7 @@ module.exports = {
           'postcss-loader',
           {
             loader: 'less-loader',
-            options: {
-            },
+            options: {},
           },
         ],
       },

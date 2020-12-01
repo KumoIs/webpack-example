@@ -10,19 +10,12 @@ const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const threadLoader = require('thread-loader');
 
-threadLoader.warmup({
-}, [
-  'babel-loader',
-  'css-loader',
-  'less-loader',
-]);
+threadLoader.warmup({}, ['babel-loader', 'css-loader', 'less-loader']);
 
 const path = require('path');
 const fs = require('fs');
 const prodConfig = require('./webpack.prod.js');
 const devConfig = require('./webpack.dev.js');
-
-const pureFuncs = process.env.NODE_ENV === 'production' ? ['console.log', 'console.table'] : [];
 
 const plugins = [
   new CleanWebpackPlugin(),
@@ -52,15 +45,19 @@ const plugins = [
 const dllFiles = fs.readdirSync(path.resolve(__dirname, '..', 'dll'));
 dllFiles.forEach((file) => {
   if (/.*\.dll.js/.test(file)) {
-    plugins.push(new AddAssetWebpackPlugin({
-      filepath: path.resolve(__dirname, '..', 'dll', file),
-    }));
+    plugins.push(
+      new AddAssetWebpackPlugin({
+        filepath: path.resolve(__dirname, '..', 'dll', file),
+      })
+    );
   }
 
   if (/.*\.manifest.js/.test(file)) {
-    plugins.push(new webpack.DllReferencePlugin({
-      manifest: path.resolve(__dirname, '..', 'dll', file),
-    }));
+    plugins.push(
+      new webpack.DllReferencePlugin({
+        manifest: path.resolve(__dirname, '..', 'dll', file),
+      })
+    );
   }
 });
 
@@ -87,7 +84,8 @@ const commonConfig = {
       new TerserPlugin({
         test: /\.jsx?$/,
         parallel: true, // 开启并行压缩
-        terserOptions: { // Terser 压缩配置
+        terserOptions: {
+          // Terser 压缩配置
           output: { comments: false },
         },
         cache: true,
@@ -145,7 +143,7 @@ const commonConfig = {
                 enabled: false,
               },
               pngquant: {
-                quality: [0.65, 0.90],
+                quality: [0.65, 0.9],
                 speed: 4,
               },
               gifsicle: {
@@ -173,15 +171,11 @@ const commonConfig = {
       },
       {
         test: /\.(csv|tsv)$/,
-        use: [
-          'csv-loader',
-        ],
+        use: ['csv-loader'],
       },
       {
         test: /\.xml$/,
-        use: [
-          'xml-loader',
-        ],
+        use: ['xml-loader'],
       },
     ],
   },
