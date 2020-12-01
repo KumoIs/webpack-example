@@ -10,6 +10,7 @@ module.exports = {
     chunkFilename: 'js/[name].[contenthash].chunk.js',
     path: path.resolve(__dirname, '..', 'dist'),
   },
+
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'style/[name].[contenthash].css',

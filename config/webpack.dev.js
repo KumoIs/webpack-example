@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const proxy = require('./proxy');
 
 module.exports = {
   mode: 'development',
@@ -12,12 +13,7 @@ module.exports = {
     hot: true,
     hotOnly: true,
     overlay: true,
-    proxy: {
-      '/api': {
-        target: 'http://192.168.16.178:11220',
-        pathRewrite: { '^/api': '' },
-      },
-    },
+    proxy,
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

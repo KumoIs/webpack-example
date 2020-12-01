@@ -1,7 +1,6 @@
 import React from 'react';
 import { hot, setConfig } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import { HashRouter } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
 import store, { history } from './store/dva.config';
 import AppRouter from './routes';

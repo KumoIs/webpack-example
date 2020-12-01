@@ -4,7 +4,6 @@ import { push } from 'connected-react-router';
 
 const Home = (props) => {
   useEffect(() => {
-    console.log(props);
     props.dispatch({
       type: 'global/test',
     });

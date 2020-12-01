@@ -1,20 +1,17 @@
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const AddAssetWebpackPlugin = require('add-asset-html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
-
 const threadLoader = require('thread-loader');
 
 threadLoader.warmup({
-  // pool options, like passed to loader options
-  // must match loader options to boot the correct pool
 }, [
-  // modules to load
-  // can be any module, i. e.
   'babel-loader',
   'css-loader',
   'less-loader',
@@ -24,6 +21,8 @@ const path = require('path');
 const fs = require('fs');
 const prodConfig = require('./webpack.prod.js');
 const devConfig = require('./webpack.dev.js');
+
+const pureFuncs = process.env.NODE_ENV === 'production' ? ['console.log', 'console.table'] : [];
 
 const plugins = [
   new CleanWebpackPlugin(),
@@ -45,12 +44,12 @@ const plugins = [
     logLevel: 'info',
     analyzerMode: 'server',
     analyzerHost: '127.0.0.1',
-    analyzerPort: 1270,
+    analyzerPort: 1271,
   }),
+  new HardSourceWebpackPlugin(),
 ];
 
 const dllFiles = fs.readdirSync(path.resolve(__dirname, '..', 'dll'));
-console.log(dllFiles);
 dllFiles.forEach((file) => {
   if (/.*\.dll.js/.test(file)) {
     plugins.push(new AddAssetWebpackPlugin({
@@ -69,18 +68,6 @@ const commonConfig = {
   entry: {
     main: './src/index.js',
   },
-  optimization: {
-    usedExports: true,
-    splitChunks: {
-      chunks: 'all',
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          // filename: 'vendor.[contenthash].js',
-        },
-      },
-    },
-  },
   resolve: {
     extensions: ['.js', '.jsx'],
     mainFiles: ['index'],
@@ -94,6 +81,33 @@ const commonConfig = {
       '@components': path.resolve(__dirname, '..', 'src/components'),
     },
   },
+  optimization: {
+    minimizer: [
+      // 代码压缩插件
+      new TerserPlugin({
+        test: /\.jsx?$/,
+        parallel: true, // 开启并行压缩
+        terserOptions: { // Terser 压缩配置
+          output: { comments: false },
+        },
+        cache: true,
+        extractComments: true, // 将注释剥离到单独的文件
+      }),
+    ],
+    usedExports: true,
+    runtimeChunk: {
+      name: 'runtime',
+    },
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          // filename: 'vendor.[contenthash].js',
+        },
+      },
+    },
+  },
   plugins,
   module: {
     rules: [
@@ -103,35 +117,15 @@ const commonConfig = {
         use: [
           {
             loader: 'thread-loader',
-            // 有同样配置的 loader 会共享一个 worker 池(worker pool)
             options: {
-              // 产生的 worker 的数量，默认是 cpu 的核心数
-              workers: 2,
-
-              // 一个 worker 进程中并行执行工作的数量
-              // 默认为 20
-              workerParallelJobs: 50,
-
-              // 闲置时定时删除 worker 进程
-              // 默认为 500ms
-              // 可以设置为无穷大， 这样在监视模式(--watch)下可以保持 worker 持续存在
-              poolTimeout: 2000,
-
-              // 池(pool)分配给 worker 的工作数量
-              // 默认为 200
-              // 降低这个数值会降低总体的效率，但是会提升工作分布更均一
-              poolParallelJobs: 50,
-
-              // 池(pool)的名称
-              // 可以修改名称来创建其余选项都一样的池(pool)
-              name: 'my-pool-js',
+              workers: 3,
             },
           },
           'babel-loader',
         ],
       },
       {
-        test: /\.(png|jpe?g|gif)$/i,
+        test: /\.(gif|png|jpe?g|svg)$/i,
         use: [
           {
             loader: 'url-loader',
@@ -139,6 +133,27 @@ const commonConfig = {
               limit: 10 * 1024,
               name: '[name].[hash:5].[ext]',
               outputPath: 'images/',
+            },
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+              },
+              optipng: {
+                enabled: false,
+              },
+              pngquant: {
+                quality: [0.65, 0.90],
+                speed: 4,
+              },
+              gifsicle: {
+                interlaced: false,
+              },
+              webp: {
+                quality: 75,
+              },
             },
           },
         ],
