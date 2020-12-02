@@ -7,7 +7,7 @@ const suspense = {
   callback: <SuspenseComponent />,
 };
 
-const Home = lazy(() => import('@pages/Home/home'), suspense);
+const Home = lazy(() => import('../pages/Home/home'), suspense);
 const List = lazy(() => import('../pages/List/list'), suspense);
 const Error = lazy(() => import('../pages/404'), suspense);
 const BasicLayout = lazy(() => import('../layout/BasicLayout'), suspense);

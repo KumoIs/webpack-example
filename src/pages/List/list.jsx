@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import qs from 'qs';
+import dayjs from 'dayjs';
 
 const Index = (props) => {
-  console.log(props);
+  useEffect(() => {
+    console.log(dayjs().format('YYYY-MM-DD'), dayjs().add(1, 'month').format('YYYY-MM-DD'));
+    console.log(qs.parse(props.location.search, { ignoreQueryPrefix: true }));
+  }, []);
   return <div>List</div>;
 };
 

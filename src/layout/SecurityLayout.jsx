@@ -1,32 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
+import { Layout, Header, Middle, Side, Main, Footer } from './styled';
 
-import './app.less';
+// import './app.less';
 
 const SecurityLayout = (props) => {
   const {
-    router: { routers },
+    route: { routes },
   } = props;
 
   return (
-    <div className="layout">
-      <div className="header">header</div>
-      <div className="main">
-        <div className="middle">
-          <div className="content">{renderRoutes(routers)}</div>
-        </div>
-        <div className="side">
+    <Layout>
+      <Header>header</Header>
+      <Main>
+        <Middle>
+          <div className="content">{renderRoutes(routes)}</div>
+        </Middle>
+        <Side>
           <ul>
             <li>
               <Link to="/">首页</Link>
               <Link to="/list">列表</Link>
             </li>
           </ul>
-        </div>
-      </div>
-      <div className="footer">footer</div>
-    </div>
+        </Side>
+      </Main>
+      <Footer>footer</Footer>
+    </Layout>
   );
 };
 

@@ -9,6 +9,7 @@ const chalk = require('chalk');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const threadLoader = require('thread-loader');
+const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 
 threadLoader.warmup({}, ['babel-loader', 'css-loader', 'less-loader']);
 
@@ -40,6 +41,7 @@ const plugins = [
     analyzerPort: 1271,
   }),
   new HardSourceWebpackPlugin(),
+  new AntdDayjsWebpackPlugin(),
 ];
 
 const dllFiles = fs.readdirSync(path.resolve(__dirname, '..', 'dll'));
@@ -123,7 +125,7 @@ const commonConfig = {
         ],
       },
       {
-        test: /\.(gif|png|jpe?g|svg)$/i,
+        test: /\.(gif|png|jpe?g)$/i,
         use: [
           {
             loader: 'url-loader',
