@@ -68,7 +68,7 @@ const commonConfig = {
     main: './src/index.js',
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
     mainFiles: ['index'],
     alias: {
       '@': path.resolve(__dirname, '..'),

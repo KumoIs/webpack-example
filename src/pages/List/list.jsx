@@ -1,19 +1,7 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import qs from 'qs';
-import dayjs from 'dayjs';
+import React  from 'react';
 
-const Index = (props) => {
-  useEffect(() => {
-    console.log(dayjs().format('YYYY-MM-DD'), dayjs().add(1, 'month').format('YYYY-MM-DD'));
-    console.log(qs.parse(props.location.search, { ignoreQueryPrefix: true }));
-  }, []);
-  return <div>List</div>;
+const List = (props) => {
+  return <div>List Component</div>;
 };
 
-export default connect(
-  (store) => ({
-    store,
-  }),
-  null
-)(Index);
+export default List

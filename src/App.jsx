@@ -1,16 +1,12 @@
 import React from 'react';
-import { hot, setConfig } from 'react-hot-loader';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
-import store, { history } from './store/dva.config';
+import {hot, setConfig} from 'react-hot-loader';
+import {ConnectedRouter} from 'connected-react-router';
 import AppRouter from './routes';
 
 const App = () => (
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <AppRouter />
-    </ConnectedRouter>
-  </Provider>
+  <ConnectedRouter>
+    <AppRouter />
+  </ConnectedRouter>
 );
 
 setConfig({
