@@ -11,26 +11,26 @@ const { merge } = require('webpack-merge');
 const threadLoader = require('thread-loader');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 
-threadLoader.warmup({}, ['babel-loader', 'css-loader', 'less-loader']);
+threadLoader.warmup({}, ['babel-loader', 'css-loader', 'less-loader', 'file-loader', 'xml-loader']);
 
 const path = require('path');
 const fs = require('fs');
 const prodConfig = require('./webpack.prod.js');
 const devConfig = require('./webpack.dev.js');
 
-console.log(path.resolve(__dirname, '..'));
 const plugins = [
   new CleanWebpackPlugin(),
   new HtmlWebpackPlugin({
-    title: 'webpack架构',
+    title: 'webpack架构😃',
     template: 'src/index.html',
     filename: 'index.html',
+    favicon: path.resolve(__dirname, '..', 'src', 'assets', 'favicon.png'),
     minify: {
       removeAttributeQuotes: true, // 压缩 去掉引号
     },
   }),
   new ProgressBarPlugin({
-    format: `build [:bar]${chalk.green.bold(':percent')} (:elapsed seconds)`,
+    format: `🏎️打包中 [:bar]${chalk.green.bold(':percent')} (:elapsed seconds)😃`,
     clear: false,
     width: '60',
   }),
@@ -132,14 +132,14 @@ const commonConfig = {
         loader: 'awesome-typescript-loader',
       },
       {
-        test: /\.(gif|png|jpe?g)$/i,
+        test: /\.(gif|png|jpe?g|ico)$/i,
         use: [
           {
             loader: 'url-loader',
             options: {
               limit: 10 * 1024,
               name: '[name].[hash:5].[ext]',
-              outputPath: 'images/',
+              outputPath: 'static/img/',
             },
           },
           {
@@ -172,8 +172,8 @@ const commonConfig = {
             loader: 'file-loader',
             options: {
               name: '[name].[hash:5].min.[ext]',
-              outputPath: 'fonts/',
-              publicPath: 'fonts/',
+              outputPath: 'static/fonts/',
+              publicPath: 'static/fonts/',
             },
           },
         ],

@@ -34,8 +34,10 @@ module.exports = {
           {
             loader: 'less-loader',
             options: {
-              modifyVars: {},
-              javascriptEnabled: true,
+              lessOptions: {
+                modifyVars: {},
+                javascriptEnabled: true,
+              },
             },
           },
         ],

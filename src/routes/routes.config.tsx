@@ -8,8 +8,8 @@ const suspense: LoadableLibrary<any> = {
   fallback: SuspenseComponent,
 };
 
-const Home = lazy(() => import('@pages/Home/home'), suspense);
-const List = lazy(() => import('@pages/List/list'), suspense);
+const Home = lazy(() => import('@pages/Home/Home'), suspense);
+const List = lazy(() => import('@pages/List/List'), suspense);
 const Error = lazy(() => import('@pages/404'), suspense);
 const BasicLayout = lazy(() => import('../layout/BasicLayout'), suspense);
 const SecurityLayout = lazy(() => import('../layout/SecurityLayout'), suspense);

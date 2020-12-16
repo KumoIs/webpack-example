@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.14/es5-shim.min.js"></script>-->
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.14/es5-sham.min.js"></script>-->
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js"></script>-->
@@ -28,6 +28,32 @@
     </style>
 </head>
 <body>
+    <script>
+      // 监听页面是否是激活状态
+      if (process.env === 'production') {
+        var hiddenProperty = 'hidden' in document ? 'hidden' :
+          'webkitHidden' in document ? 'webkitHidden' :
+            'mozHidden' in document ? 'mozHidden' :
+              null;
+        var visibilityChangeEvent = hiddenProperty.replace(/hidden/i, 'visibilitychange');
+        var onVisibilityChange = function(){
+          if (!document[hiddenProperty]) {
+            let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+            link.type = 'image/x-icon';
+            link.rel = 'shortcut icon';
+            link.href = './favicon.ico';
+            document.getElementsByTagName('head')[0].appendChild(link);
+          }else{
+            let link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+            link.type = 'image/x-icon';
+            link.rel = 'shortcut icon';
+            link.href = './favicon-the-active.ico';
+            document.getElementsByTagName('head')[0].appendChild(link);
+          }
+        }
+        document.addEventListener(visibilityChangeEvent, onVisibilityChange);
+      }
+    </script>
     <div id="root"></div>
 </body>
 </html>

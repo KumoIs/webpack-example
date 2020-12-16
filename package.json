@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "webpack-dev-server --config build/webpack.common.js",
     "start": "webpack --config build/webpack.common.js",
-    "build": "cross-env NODE_ENV=production webpack --config build/webpack.common.js",
+    "build": "cross-env NODE_ENV=production webpack --watch --config build/webpack.common.js",
     "prod": "http-server -o dist",
     "build:dll": "webpack --config build/webpack.dll.js",
     "lint": "eslint src --fix --ext .ts,.tsx,.js,.jsx",
