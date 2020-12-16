@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const Error = () => {
+interface IProps {}
+const Error: FC<IProps> = () => {
   return <div>404</div>;
 };
 export default Error;
