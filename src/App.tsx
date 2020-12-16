@@ -1,12 +1,12 @@
 import React from 'react';
-import {hot, setConfig} from 'react-hot-loader';
-import {ConnectedRouter} from 'connected-react-router';
+import { hot, setConfig } from 'react-hot-loader';
+import { HashRouter } from 'react-router-dom';
 import AppRouter from './routes';
 
 const App = () => (
-  <ConnectedRouter>
+  <HashRouter>
     <AppRouter />
-  </ConnectedRouter>
+  </HashRouter>
 );
 
 setConfig({

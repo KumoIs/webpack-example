@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const Home = (props) => {
+interface IProps {}
+const Home: FC<IProps> = () => {
   return <div>Home Component</div>;
 };
 
-export default Home
+export default Home;

@@ -1,7 +1,8 @@
-import React  from 'react';
+import React, { FC } from 'react';
 
-const List = (props) => {
+interface IProps {}
+const List: FC<IProps> = () => {
   return <div>List Component</div>;
 };
 
-export default List
+export default List;

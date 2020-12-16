@@ -18,6 +18,7 @@ const fs = require('fs');
 const prodConfig = require('./webpack.prod.js');
 const devConfig = require('./webpack.dev.js');
 
+console.log(path.resolve(__dirname, '..'));
 const plugins = [
   new CleanWebpackPlugin(),
   new HtmlWebpackPlugin({
@@ -65,14 +66,14 @@ dllFiles.forEach((file) => {
 
 const commonConfig = {
   entry: {
-    main: './src/index.js',
+    main: './src/index.tsx',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     mainFiles: ['index'],
     alias: {
-      '@': path.resolve(__dirname, '..'),
-      '@src': path.resolve(__dirname, '..', 'src'),
+      '@': path.resolve(__dirname, '..', 'src'),
+      '@utils': path.resolve(__dirname, '..', 'src/utils'),
       '@pages': path.resolve(__dirname, '..', 'src/pages'),
       '@store': path.resolve(__dirname, '..', 'src/store'),
       '@styles': path.resolve(__dirname, '..', 'src/styles'),
@@ -123,6 +124,12 @@ const commonConfig = {
           },
           'babel-loader',
         ],
+      },
+      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: 'awesome-typescript-loader',
       },
       {
         test: /\.(gif|png|jpe?g)$/i,

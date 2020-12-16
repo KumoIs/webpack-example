@@ -1,19 +1,20 @@
 import React from 'react';
-import lazy from '@loadable/component';
+import lazy, { LoadableLibrary } from '@loadable/component';
 import { Redirect } from 'react-router';
+import { RouteConfig } from 'react-router-config';
 import SuspenseComponent from './SuspenseComponent';
 
-const suspense = {
-  callback: <SuspenseComponent />,
+const suspense: LoadableLibrary<any> = {
+  fallback: SuspenseComponent,
 };
 
-const Home = lazy(() => import('../pages/Home/home'), suspense);
-const List = lazy(() => import('../pages/List/list'), suspense);
-const Error = lazy(() => import('../pages/404'), suspense);
+const Home = lazy(() => import('@pages/Home/home'), suspense);
+const List = lazy(() => import('@pages/List/list'), suspense);
+const Error = lazy(() => import('@pages/404'), suspense);
 const BasicLayout = lazy(() => import('../layout/BasicLayout'), suspense);
 const SecurityLayout = lazy(() => import('../layout/SecurityLayout'), suspense);
 
-const routers = [
+const routers: RouteConfig[] = [
   {
     component: BasicLayout,
     routes: [
@@ -24,7 +25,7 @@ const routers = [
             path: '/',
             exact: true,
             hidden: true,
-            render: () => <Redirect to="/home" />,
+            render: () => <Redirect to="home" />,
           },
           {
             path: '/home',

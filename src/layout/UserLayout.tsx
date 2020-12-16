@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const userLayout = (props) => (
+interface IProps {}
+const userLayout: FC<IProps> = (props) => (
   <div>
     <div>Header</div>
     <div>-------------------------- 这是一个登录框</div>
