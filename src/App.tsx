@@ -3,10 +3,15 @@ import { hot, setConfig } from 'react-hot-loader';
 import { HashRouter } from 'react-router-dom';
 import AppRouter from './routes';
 
+import { Provider } from 'react-redux';
+import store from '@config/dva.config';
+
 const App = () => (
-  <HashRouter>
-    <AppRouter />
-  </HashRouter>
+  <Provider store={store}>
+    <HashRouter>
+      <AppRouter />
+    </HashRouter>
+  </Provider>
 );
 
 setConfig({

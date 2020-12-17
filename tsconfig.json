@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+      "experimentalDecorators": true,
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Basic Options */
@@ -17,7 +18,7 @@
     "outDir": "./dist",                        /* Redirect output structure to the directory. */
     // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
     // "composite": true,                     /* Enable project compilation */
-    // "tsBuildInfoFile": "./",               /* Specify file to store incremental compilation information */
+    // "tsBuildInfoFile": "./",               /* Specify file to stores incremental compilation information */
     // "removeComments": true,                /* Do not emit comments to output. */
     // "noEmit": true,                        /* Do not emit outputs. */
     // "importHelpers": true,                 /* Import emit helpers from 'tslib'. */
@@ -51,6 +52,8 @@
       "@assets/*": ["src/assets/*"],
       "@utils/*": ["src/utils/*"],
       "@styles/*": ["src/styles/*"],
+      "@stores/*": ["src/stores/*"],
+      "@config/*": ["src/config/*"],
       "@components/*": ["src/components/*"]
     },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */

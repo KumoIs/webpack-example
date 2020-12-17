@@ -14,6 +14,7 @@ module.exports = {
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
+      legacyDecorators: true,
     },
     ecmaVersion: 12,
     sourceType: 'module',
@@ -25,5 +26,6 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 'off',
     'react/display-name': 'off',
     '@typescript-eslint/no-explicit-any': ['off'],
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
 };
