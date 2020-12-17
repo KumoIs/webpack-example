@@ -11,7 +11,7 @@ const { merge } = require('webpack-merge');
 const threadLoader = require('thread-loader');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 
-threadLoader.warmup({}, ['babel-loader', 'css-loader', 'less-loader']);
+threadLoader.warmup({}, ['babel-loader', 'css-loader', 'less-loader', 'file-loader', 'xml-loader']);
 
 const path = require('path');
 const fs = require('fs');
@@ -21,15 +21,16 @@ const devConfig = require('./webpack.dev.js');
 const plugins = [
   new CleanWebpackPlugin(),
   new HtmlWebpackPlugin({
-    title: 'webpack架构',
+    title: 'webpack架构😃',
     template: 'src/index.html',
     filename: 'index.html',
+    favicon: path.resolve(__dirname, '..', 'src', 'assets', 'favicon.png'),
     minify: {
       removeAttributeQuotes: true, // 压缩 去掉引号
     },
   }),
   new ProgressBarPlugin({
-    format: `build [:bar]${chalk.green.bold(':percent')} (:elapsed seconds)`,
+    format: `🏎️打包中 [:bar]${chalk.green.bold(':percent')} (:elapsed seconds)😃`,
     clear: false,
     width: '60',
   }),
@@ -65,18 +66,20 @@ dllFiles.forEach((file) => {
 
 const commonConfig = {
   entry: {
-    main: './src/index.js',
+    main: './src/index.tsx',
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
     mainFiles: ['index'],
     alias: {
-      '@': path.resolve(__dirname, '..'),
-      '@src': path.resolve(__dirname, '..', 'src'),
+      '@': path.resolve(__dirname, '..', 'src'),
+      '@config': path.resolve(__dirname, '..', 'src/config'),
+      '@utils': path.resolve(__dirname, '..', 'src/utils'),
       '@pages': path.resolve(__dirname, '..', 'src/pages'),
-      '@store': path.resolve(__dirname, '..', 'src/store'),
+      '@stores': path.resolve(__dirname, '..', 'src/stores'),
       '@styles': path.resolve(__dirname, '..', 'src/styles'),
       '@assets': path.resolve(__dirname, '..', 'src/assets'),
+      '@layout': path.resolve(__dirname, '..', 'src/layout'),
       '@components': path.resolve(__dirname, '..', 'src/components'),
     },
   },
@@ -124,15 +127,21 @@ const commonConfig = {
           'babel-loader',
         ],
       },
+      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
       {
-        test: /\.(gif|png|jpe?g)$/i,
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: 'awesome-typescript-loader',
+      },
+      {
+        test: /\.(gif|png|jpe?g|ico)$/i,
         use: [
           {
             loader: 'url-loader',
             options: {
               limit: 10 * 1024,
               name: '[name].[hash:5].[ext]',
-              outputPath: 'images/',
+              outputPath: 'static/img/',
             },
           },
           {
@@ -165,8 +174,8 @@ const commonConfig = {
             loader: 'file-loader',
             options: {
               name: '[name].[hash:5].min.[ext]',
-              outputPath: 'fonts/',
-              publicPath: 'fonts/',
+              outputPath: 'static/fonts/',
+              publicPath: 'static/fonts/',
             },
           },
         ],

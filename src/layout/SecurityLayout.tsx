@@ -1,21 +1,18 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { renderRoutes } from 'react-router-config';
+import { renderRoutes, RouteConfig } from 'react-router-config';
 import { Layout, Header, Middle, Side, Main, Footer } from './styled';
 
-// import './app.less';
-
-const SecurityLayout = (props) => {
-  const {
-    route: { routes },
-  } = props;
-
+interface IProps {
+  route: RouteConfig;
+}
+const SecurityLayout: FC<IProps> = (props) => {
   return (
     <Layout>
       <Header>header</Header>
       <Main>
         <Middle>
-          <div className="content">{renderRoutes(routes)}</div>
+          <div className="content">{renderRoutes(props.route.routes)}</div>
         </Middle>
         <Side>
           <ul>

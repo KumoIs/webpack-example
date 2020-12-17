@@ -1,15 +1,16 @@
 import React from 'react';
 import { hot, setConfig } from 'react-hot-loader';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
-import store, { history } from './store/dva.config';
+import { HashRouter } from 'react-router-dom';
 import AppRouter from './routes';
+
+import { Provider } from 'react-redux';
+import store from '@config/dva.config';
 
 const App = () => (
   <Provider store={store}>
-    <ConnectedRouter history={history}>
+    <HashRouter>
       <AppRouter />
-    </ConnectedRouter>
+    </HashRouter>
   </Provider>
 );
 
