@@ -1,7 +1,7 @@
 import { Effect, Model, SubscriptionsMapObject } from 'dva-core-ts';
 import { Reducer } from 'redux';
 
-const namespace = 'global';
+export const namespace = 'global';
 export interface GlobalState {
   list: [];
 }
@@ -9,7 +9,7 @@ interface GlobalModel extends Model {
   namespace: typeof namespace;
   state: GlobalState;
   effects: {
-    add: Effect,
+    fetchSelect: Effect,
   };
   reducers: {
     setState: Reducer<GlobalState>,
@@ -24,7 +24,7 @@ const globalModel: GlobalModel = {
   namespace,
   state: initialState,
   effects: {
-    *add(_, { select }) {
+    *fetchSelect(_, { select }) {
       yield console.log(select);
     },
   },

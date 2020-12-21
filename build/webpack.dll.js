@@ -5,8 +5,22 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    vendorsDll: ['@babel/polyfill', 'chalk', 'qs', 'antd', 'dayjs'],
-    reactDll: ['react', 'react-dom', '@loadable/component', 'react-router-dom', 'react-router', 'use-immer'],
+    vendorsDll: ['@babel/polyfill', 'chalk', 'qs', 'dayjs', 'core-js', 'axios'],
+    antdDll: ['antd'],
+    antVX6: ['@antv/x6'],
+    antV7Dll: ['@antv/l7', '@antv/l7-maps'],
+    reactDll: [
+      'react',
+      'react-dom',
+      '@loadable/component',
+      'react-router-dom',
+      'react-router',
+      'immer',
+      'use-immer',
+      'redux',
+      'react-redux',
+      'styled-components',
+    ],
   },
   output: {
     filename: '[name].dll.js',

@@ -39,7 +39,8 @@ bower_components
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directories
+# Dependency directories】
+dll/
 node_modules/
 jspm_packages/
 
@@ -118,3 +119,4 @@ dist
 .yarn/build-state.yml
 .pnp.*
 .idea
+
