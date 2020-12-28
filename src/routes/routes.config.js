@@ -4,7 +4,7 @@ import { Redirect } from 'react-router';
 import SuspenseComponent from './SuspenseComponent';
 
 const suspense = {
-  callback: <SuspenseComponent />,
+  fallback: <SuspenseComponent />,
 };
 
 const Home = lazy(() => import('../pages/Home/home'), suspense);
