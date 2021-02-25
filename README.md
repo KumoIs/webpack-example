@@ -409,7 +409,7 @@ module.exports = {
 
 ## 优化 webpack 打包速度
 
-* **配置 Dll**
+### Dll 缓存优化
     > `dll` 是通过提前安装你所使用的库，之后再去打包会通过从 `dll` 去拿如果没有再去 `node_module`
     > 创建 webpack.dll.js 文件
 ```javascript
@@ -455,30 +455,28 @@ module.exports = {
 }
 ```
 
-* **plugins 优化**
+### Plugins 多线程打包
     > 通过使用 thread-loader 或是 happypack 来进行多线程打包（官方目前主推 thread-loader， happypack 不再进行维护更新）（楼主用的 thread-loader)
     > `parallel-webpack-plugin` 多页面项目时使用。多线程打包。
 
 
-## gzip
+### Gzip 压缩文件大小
 >为你的文件开启gzip压缩是一个不错的选择，通常开启gzip压缩能够有效的缩小传输资源的大小，如果你的项目是用nginx作为web服务器的话，只需在nginx的配置文件中配置相应的gzip选项就可以让你的静态资源服务器开启gzip压缩
- ```
- #开启和关闭gzip模式
- gzip on;
- #gizp压缩起点，文件大于1k才进行压缩
- gzip_min_length 1k;
- # gzip 压缩级别，1-9，数字越大压缩的越好，也越占用CPU时间
- gzip_comp_level 6;
- # 进行压缩的文件类型。
- gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript ;
- #nginx对于静态文件的处理模块，开启后会寻找以.gz结尾的文件，直接返回，不会占用cpu进行压缩，如果找不到则不进行压缩
- gzip_static on
- # 是否在http header中添加Vary: Accept-Encoding，建议开启
- gzip_vary on;
- # 设置gzip压缩针对的HTTP协议版本
- gzip_http_version 1.1;
-``` 
-前端输出gzip文件，利用compression-webpack-plugin让webpack在打包的时候输出.gz后缀的压缩文件
+##### 开启和关闭gzip模式
+`gzip on;`
+##### gizp压缩起点，文件大于1k才进行压缩
+`gzip_min_length 1k;`
+##### gzip 压缩级别，1-9，数字越大压缩的越好，也越占用CPU时间
+`gzip_comp_level 6;`
+##### 进行压缩的文件类型。
+`gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript ;`
+##### nginx对于静态文件的处理模块，开启后会寻找以.gz结尾的文件，直接返回，不会占用cpu进行压缩，如果找不到则不进行压缩
+`gzip_static on`
+##### 是否在http header中添加Vary: Accept-Encoding，建议开启
+`gzip_vary on;`
+##### 设置gzip压缩针对的HTTP协议版本
+`gzip_http_version 1.1;`
+##### 前端输出gzip文件，利用compression-webpack-plugin让webpack在打包的时候输出.gz后缀的压缩文件
 ```javascript
 const CompressionPlugin = require("compression-webpack-plugin")
 

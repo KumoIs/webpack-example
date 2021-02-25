@@ -1,4 +1,5 @@
 const plugins = [
+  ['@emotion'],
   [
     '@babel/plugin-proposal-decorators',
     {
@@ -22,7 +23,6 @@ const plugins = [
   '@babel/plugin-syntax-dynamic-import',
   '@babel/plugin-transform-object-assign',
   'react-hot-loader/babel',
-  'babel-plugin-styled-components',
 ];
 
 if (process.env.NODE_ENV === 'production') {
