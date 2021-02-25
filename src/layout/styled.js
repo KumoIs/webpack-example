@@ -4,6 +4,7 @@ export const Layout = styled.div`
   width: 100%;
   height: 100%;
   min-height: 100%;
+  overflow: hidden;
 `;
 
 export const Header = styled.div`
@@ -14,9 +15,11 @@ export const Header = styled.div`
 `;
 
 export const Main = styled.div`
+  width: 100%;
   min-height: calc(100% - 96px);
   height: calc(100% - 96px);
-
+  padding-left: 256px;
+  overflow: auto;
   div {
     float: left;
   }
@@ -27,17 +30,25 @@ export const Middle = styled.div`
   min-height: 100%;
   height: 100%;
   background: rgb(206, 201, 201);
+  overflow: auto;
   .content {
-    margin-left: 256px;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+    overflow: auto;
   }
 `;
 
 export const Side = styled.div`
   width: 256px;
-  margin-left: -100%;
-  min-height: 100%;
   height: 100%;
+  min-height: 100%;
+  margin-left: -100%;
+  position: relative;
+  right: 256px;
   background: rgba(95, 179, 235, 0.972);
 `;
 
-export const Footer = styled(Header)``;
+export const Footer = styled(Header)`
+  clear: both;
+`;

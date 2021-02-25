@@ -8,13 +8,13 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
       legacyDecorators: true,
+      experimentalObjectRestSpread: true,
     },
     ecmaVersion: 12,
     sourceType: 'module',

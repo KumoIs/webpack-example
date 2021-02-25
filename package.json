@@ -18,6 +18,10 @@
     "prettier": "prettier -c --write src/**/*.{ts,js,jsx,tsx,less,css,json}"
   },
   "dependencies": {
+    "@antv/l7": "^2.3.2",
+    "@antv/l7-district": "^2.2.46",
+    "@antv/l7-maps": "^2.3.2",
+    "@antv/x6": "^1.5.1",
     "@babel/polyfill": "^7.12.1",
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.1.5",
@@ -29,6 +33,7 @@
     "dayjs": "^1.9.6",
     "dva-core-ts": "^2.0.7",
     "dva-loading-ts": "^3.0.23",
+    "immer": "^8.0.0",
     "qs": "^6.9.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -57,6 +62,7 @@
     "@types/react-redux": "^7.1.12",
     "@types/react-router-config": "^5.0.1",
     "@types/react-router-dom": "^5.1.6",
+    "@types/styled-components": "^5.1.7",
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.10.0",
     "add-asset-html-webpack-plugin": "^3.1.3",
