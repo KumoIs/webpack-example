@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 
 export const Layout = styled.div`
@@ -27,9 +27,7 @@ export const DndWarp = styled.div`
   }
 `;
 
-export const Container = styled.div.attrs({
-  id: 'container'
-})`
+export const Container = styled.div`
   width: 100%;
   min-height: 100%;
   height: 100%;

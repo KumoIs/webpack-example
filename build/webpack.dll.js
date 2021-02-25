@@ -7,7 +7,7 @@ module.exports = {
   entry: {
     vendorsDll: ['@babel/polyfill', 'chalk', 'qs', 'dayjs', 'core-js', 'axios'],
     antdDll: ['antd'],
-    antVX6: ['@antv/x6'],
+    antVX6Dll: ['@antv/x6'],
     antV7Dll: ['@antv/l7', '@antv/l7-maps'],
     reactDll: [
       'react',
@@ -19,7 +19,8 @@ module.exports = {
       'use-immer',
       'redux',
       'react-redux',
-      'styled-components',
+      '@emotion/react',
+      '@emotion/styled'
     ],
   },
   output: {

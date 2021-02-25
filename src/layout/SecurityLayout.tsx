@@ -18,7 +18,12 @@ const SecurityLayout: FC<IProps> = (props) => {
           <ul>
             <li>
               <Link to="/">首页</Link>
+            </li>
+            <li>
               <Link to="/list">列表</Link>
+            </li>
+            <li>
+              <Link to={"/user"}>用户</Link>
             </li>
           </ul>
         </Side>

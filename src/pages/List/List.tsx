@@ -55,21 +55,6 @@ const List: FC<IProps> = () => {
       height: graphContainer.current.clientHeight,
     });
 
-    Graph.registerNode('custom-node', {
-      inherit: 'rect',
-      attrs: {
-        body: {
-          rx: '100%',
-          ry: '100%',
-          stroke: 'rgb(103,167,250, .2)',
-          fill: 'rgb(103,167,250, .5)',
-        },
-        label: {
-          text: 'custom-node',
-        },
-      },
-    })
-
     const rect = new Shape.Rect({
       id: 'node3',
       x: 305,
@@ -85,7 +70,7 @@ const List: FC<IProps> = () => {
           fill: 'rgb(103,167,250, .5)',
         },
         label: {
-          text: 'Hello',
+          text: 'hello node3',
         },
       },
     })
@@ -99,7 +84,7 @@ const List: FC<IProps> = () => {
       height: 80,
       x: 300,
       y: 300,
-      shape: 'custom-node',
+      // shape: 'custom-node',
       label: 'node',
     })
     graphRef.addEdge({
@@ -180,7 +165,7 @@ const List: FC<IProps> = () => {
           },
         })
 
-    graphDndRef?.start(node, e.nativeEvent as any)
+    graphDndRef?.start(node, e.nativeEvent as unknown)
   }
 
   return (
