@@ -77,6 +77,7 @@ const commonConfig = {
       '@store': path.resolve(__dirname, '..', 'src/store'),
       '@styles': path.resolve(__dirname, '..', 'src/styles'),
       '@assets': path.resolve(__dirname, '..', 'src/assets'),
+      '@config': path.resolve(__dirname, '..', 'src/config'),
       '@components': path.resolve(__dirname, '..', 'src/components'),
     },
   },

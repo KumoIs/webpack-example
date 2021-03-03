@@ -4,22 +4,21 @@ import { push } from 'connected-react-router';
 
 const Home = (props) => {
   useEffect(() => {
-    console.table('asdasd');
     props.dispatch({
       type: 'global/test',
     });
-    props.dispatch(
-      push({
-        pathname: '/list',
-        search: 'sadsad=asdaskodjo&asd=asdasd',
-        query: {
-          name: '123',
-          dd: '1q23123',
-        },
-      })
-    );
+    console.log(props);
   }, []);
-  return <div>Home Component</div>;
+  return <div onClick={() => props.dispatch(
+    push({
+      pathname: '/list',
+      search: 'sadsad=asdaskodjo&asd=asdasd',
+      query: {
+        name: '123',
+        dd: '1q23123',
+      },
+    })
+  )}>Home Component</div>;
 };
 
 export default connect(({ global, router }) => ({

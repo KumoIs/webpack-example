@@ -5,18 +5,19 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    vendorsDll: ['@babel/polyfill', 'chalk', 'qs', 'antd', 'dayjs'],
+    vendorsDll: ['@babel/polyfill', 'chalk', 'qs', 'dayjs', 'core-js', 'axios'],
     reactDll: [
       'react',
-      'redux',
-      'react-redux',
       'react-dom',
       '@loadable/component',
       'react-router-dom',
       'react-router',
-      'react-router-redux',
       'immer',
       'use-immer',
+      'redux',
+      'react-redux',
+      '@emotion/react',
+      '@emotion/styled',
     ],
   },
   output: {
