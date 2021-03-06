@@ -15,19 +15,40 @@
   "plugins": [
     "react",
     "react-hooks",
-    "prettier"
+    "prettier",
+    "@emotion"
   ],
   "rules": {
     "react/prefer-stateless-function": "off",
     "react/jsx-filename-extension": "off",
-    "import/no-extraneous-dependencies": "off",
     "no-console": "off",
     "linebreak-style": "off",
     "react/prop-types": "off",
     "no-underscore-dangle": "off",
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "import/extensions": ["error", "always", {
+      "js": "never",
+      "jsx": "never"
+    }],
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": true
+    }],
+    "import/no-unresolved": "error",
+    "@emotion/pkg-renaming": "error",
+    "@emotion/jsx-import": "error",
+    "@emotion/no-vanilla": "error",
+    "@emotion/import-from-emotion": "error",
+    "@emotion/styled-import": "error",
   },
   "globals": {
     "document": false
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "./build/webpack.common.js"
+      },
+      "node": {}
+    }
   }
 }

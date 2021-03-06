@@ -1,27 +1,29 @@
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const AddAssetWebpackPlugin = require('add-asset-html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const chalk = require('chalk');
-const webpack = require('webpack');
-const { merge } = require('webpack-merge');
-const threadLoader = require('thread-loader');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
-
-threadLoader.warmup({}, ['babel-loader', 'css-loader', 'less-loader']);
+// const AddAssetWebpackPlugin = require('add-asset-html-webpack-plugin');
 
 const path = require('path');
-const fs = require('fs');
+const chalk = require('chalk');
+const { merge } = require('webpack-merge');
+const threadLoader = require('thread-loader');
+// const webpack = require('webpack');
+
+// const fs = require('fs');
 const prodConfig = require('./webpack.prod.js');
 const devConfig = require('./webpack.dev.js');
+
+threadLoader.warmup({}, ['babel-loader', 'css-loader', 'less-loader']);
 
 const plugins = [
   new CleanWebpackPlugin(),
   new HtmlWebpackPlugin({
-    title: 'webpack架构',
+    title: 'webpack react example',
     template: 'src/index.html',
     filename: 'index.html',
     minify: {
@@ -44,24 +46,24 @@ const plugins = [
   new AntdDayjsWebpackPlugin(),
 ];
 
-const dllFiles = fs.readdirSync(path.resolve(__dirname, '..', 'dll'));
-dllFiles.forEach((file) => {
-  if (/.*\.dll.js/.test(file)) {
-    plugins.push(
-      new AddAssetWebpackPlugin({
-        filepath: path.resolve(__dirname, '..', 'dll', file),
-      })
-    );
-  }
-
-  if (/.*\.manifest.js/.test(file)) {
-    plugins.push(
-      new webpack.DllReferencePlugin({
-        manifest: path.resolve(__dirname, '..', 'dll', file),
-      })
-    );
-  }
-});
+// const dllFiles = fs.readdirSync(path.resolve(__dirname, '..', 'dll'));
+// dllFiles.forEach((file) => {
+//   if (/.*\.dll.js/.test(file)) {
+//     plugins.push(
+//       new AddAssetWebpackPlugin({
+//         filepath: path.resolve(__dirname, '..', 'dll', file),
+//       })
+//     );
+//   }
+//
+//   if (/.*\.manifest.js/.test(file)) {
+//     plugins.push(
+//       new webpack.DllReferencePlugin({
+//         manifest: path.resolve(__dirname, '..', 'dll', file),
+//       })
+//     );
+//   }
+// });
 
 const commonConfig = {
   entry: {
@@ -73,11 +75,13 @@ const commonConfig = {
     alias: {
       '@': path.resolve(__dirname, '..'),
       '@src': path.resolve(__dirname, '..', 'src'),
+      '@utils': path.resolve(__dirname, '..', 'src/utils'),
       '@pages': path.resolve(__dirname, '..', 'src/pages'),
       '@store': path.resolve(__dirname, '..', 'src/store'),
       '@styles': path.resolve(__dirname, '..', 'src/styles'),
       '@assets': path.resolve(__dirname, '..', 'src/assets'),
       '@config': path.resolve(__dirname, '..', 'src/config'),
+      '@routes': path.resolve(__dirname, '..', 'src/routes'),
       '@components': path.resolve(__dirname, '..', 'src/components'),
     },
   },
@@ -104,7 +108,6 @@ const commonConfig = {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          // filename: 'vendor.[contenthash].js',
         },
       },
     },
@@ -132,7 +135,7 @@ const commonConfig = {
             loader: 'url-loader',
             options: {
               limit: 10 * 1024,
-              name: '[name].[hash:5].[ext]',
+              name: '[name].[hash].[ext]',
               outputPath: 'images/',
             },
           },
@@ -165,7 +168,7 @@ const commonConfig = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash:5].min.[ext]',
+              name: '[name].[hash].min.[ext]',
               outputPath: 'fonts/',
               publicPath: 'fonts/',
             },

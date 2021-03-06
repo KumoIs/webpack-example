@@ -7,42 +7,54 @@ const suspense = {
   fallback: <SuspenseComponent />,
 };
 
-const Home = lazy(() => import('../pages/Home/home'), suspense);
-const List = lazy(() => import('../pages/List/list'), suspense);
-const Error = lazy(() => import('../pages/404'), suspense);
+// 布局组件
 const BasicLayout = lazy(() => import('../layout/BasicLayout'), suspense);
 const SecurityLayout = lazy(() => import('../layout/SecurityLayout'), suspense);
 
-const routers = [
+// 业务页面
+const Home = lazy(() => import('../pages/Home/Home'), suspense);
+const List = lazy(() => import('../pages/List/List'), suspense);
+const Canvas = lazy(() => import('@pages/Canvas/canvas'), suspense);
+const Error = lazy(() => import('../pages/404'), suspense);
+
+export const menuRouters = [
+  {
+    path: '/',
+    exact: true,
+    hidden: true,
+    render: () => <Redirect to="/home" />,
+  },
+  {
+    path: '/home',
+    name: '工作台',
+    component: Home,
+  },
+  {
+    path: '/list',
+    name: '列表',
+    component: List,
+  },
+  {
+    path: '/canvas',
+    name: 'Canvas',
+    component: Canvas,
+  },
+  {
+    hidden: true,
+    component: Error,
+  },
+];
+
+const rootRoutes = [
   {
     component: BasicLayout,
     routes: [
       {
         component: SecurityLayout,
-        routes: [
-          {
-            path: '/',
-            exact: true,
-            hidden: true,
-            render: () => <Redirect to="/home" />,
-          },
-          {
-            path: '/home',
-            name: '工作台',
-            component: Home,
-          },
-          {
-            path: '/list',
-            name: '列表',
-            component: List,
-          },
-          {
-            component: Error,
-          },
-        ],
+        routes: menuRouters,
       },
     ],
   },
 ];
 
-export default routers;
+export default rootRoutes;

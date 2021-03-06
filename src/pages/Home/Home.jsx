@@ -7,18 +7,24 @@ const Home = (props) => {
     props.dispatch({
       type: 'global/test',
     });
-    console.log(props);
   }, []);
-  return <div onClick={() => props.dispatch(
-    push({
-      pathname: '/list',
-      search: 'sadsad=asdaskodjo&asd=asdasd',
-      query: {
-        name: '123',
-        dd: '1q23123',
-      },
-    })
-  )}>Home Component</div>;
+  return (
+    <div>
+
+      <div onClick={() => props.dispatch(
+        push({
+          pathname: '/list',
+          search: 'sadsad=asdaskodjo&asd=asdasd',
+          query: {
+            name: '123',
+            dd: '1q23123',
+          },
+        })
+      )}>
+        跳转List页面
+      </div>
+    </div>
+  );
 };
 
 export default connect(({ global, router }) => ({
