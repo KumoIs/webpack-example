@@ -42,7 +42,25 @@ const plugins = [
     analyzerHost: '127.0.0.1',
     analyzerPort: 1271,
   }),
-  new HardSourceWebpackPlugin(),
+  new HardSourceWebpackPlugin({
+    // Either an absolute path or relative to webpack's options.context.
+    cacheDirectory: 'node_modules/.cache/hard-source/[confighash]',
+    // Either an absolute path or relative to webpack's options.context.
+    // Sets webpack's recordsPath if not already set.
+    recordsPath: 'node_modules/.cache/hard-source/[confighash]/records.json',
+    // Either a string of object hash function given a webpack config.
+    configHash(webpackConfig) {
+      // node-object-hash on npm can be used to build this.
+      // eslint-disable-next-line global-require,import/no-unresolved
+      return require('node-object-hash')({ sort: false }).hash(webpackConfig);
+    },
+    // Either false, a string, an object, or a project hashing function.
+    environmentHash: {
+      root: process.cwd(),
+      directories: [],
+      files: ['package-lock.json', 'yarn.lock'],
+    },
+  }),
   new AntdDayjsWebpackPlugin(),
 ];
 
