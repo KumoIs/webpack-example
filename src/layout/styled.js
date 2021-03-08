@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 
 export const Layout = styled.div`
-  min-height: 100vh;
+  height: 100%;
   display: grid;
   grid-template:
     [header-left] 'header header' 48px [header-right]
-    [main-left] 'side  main' 1fr [main-right]
+    [main-left] 'side  main' auto [main-right]
     [footer-left] 'footer  footer' 48px [footer-right]
-    / 236px 1fr;
+    / 236px auto;
 `;
 
 export const Header = styled.div`
@@ -20,12 +20,17 @@ export const Header = styled.div`
 
 export const Main = styled.div`
   width: 100%;
+  height: 100%;
+  overflow: auto;
   grid-area: main;
   background-color: #eaeae2;
   box-sizing: content-box;
 `;
 
 export const Side = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   grid-area: side;
   background-color: #bcbbba;
 `;

@@ -67,7 +67,7 @@ const plugins = [
 
 const commonConfig = {
   entry: {
-    main: './src/index.js',
+    main: './src/index.jsx',
   },
   resolve: {
     extensions: ['.js', '.jsx'],

@@ -34,7 +34,7 @@
 ```javascript
 // webpack 配置
     module.exports = {
-        entry: './src/index.js'
+        entry: './src/index.jsx'
     };
 ```
 * **配置 多入口**
@@ -53,9 +53,9 @@
     // webpack 配置
     module.exports = {
         entry: {
-            pageOne: './src/pageOne/index.js',
-            pageTwo: './src/pageTwo/index.js',
-            pageThree: './src/pageThree/index.js'
+            pageOne: './src/pageOne/index.jsx',
+            pageTwo: './src/pageTwo/index.jsx',
+            pageThree: './src/pageThree/index.jsx'
         }
      };
 ```
@@ -67,7 +67,7 @@
     const path = require('path')
     module.exports = {
         entry: {
-          main:'./src/index.js'
+          main:'./src/index.jsx'
         },
         //__dirname:返回当前模块的目录名;
         //__filename:返回当前模块的文件名;

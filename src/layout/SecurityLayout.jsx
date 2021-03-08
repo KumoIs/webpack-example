@@ -13,14 +13,22 @@ const SecurityLayout = (props) => {
   } = props;
   const dispatch = useDispatch();
 
-  const renderMenuItem = menuRouters.map((item) => {
-    if (item.hidden) return false;
-    return (
-      <Menu.Item key={item.path} name={item.name}>
-        {item.name}
-      </Menu.Item>
-    );
-  });
+  const renderMenuItem = (router) =>
+    router.map((item) => {
+      if (item.hidden) return false;
+      if (item.routes && item.routes.length) {
+        return (
+          <Menu.SubMenu key={item.path} title={item.name}>
+            {renderMenuItem(item.routes)}
+          </Menu.SubMenu>
+        );
+      }
+      return (
+        <Menu.Item key={item.path} name={item.name}>
+          {item.name}
+        </Menu.Item>
+      );
+    });
 
   const handleMenuClick = ({ item, key }) => {
     dispatch(push(key));
@@ -31,7 +39,9 @@ const SecurityLayout = (props) => {
     <Layout>
       <Header>header</Header>
       <Side>
-        <Menu onClick={handleMenuClick}>{renderMenuItem}</Menu>
+        <Menu mode="inline" onClick={handleMenuClick}>
+          {renderMenuItem(menuRouters)}
+        </Menu>
       </Side>
       <Main>{renderRoutes(routes)}</Main>
       <Footer>footer</Footer>

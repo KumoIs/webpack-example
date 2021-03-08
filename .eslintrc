@@ -39,6 +39,7 @@
     "@emotion/no-vanilla": "error",
     "@emotion/import-from-emotion": "error",
     "@emotion/styled-import": "error",
+    "no-use-before-define": "off"
   },
   "globals": {
     "document": false
