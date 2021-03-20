@@ -3,11 +3,12 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
+    es6: true,
   },
   extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
+    'eslint:recommended',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -19,7 +20,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
+  plugins: ['@emotion', 'react', 'react-hooks', '@typescript-eslint', 'prettier'],
   rules: {
     'react/prop-types': 'off',
     '@typescript-eslint/no-var-requires': 'off',
@@ -27,5 +28,10 @@ module.exports = {
     'react/display-name': 'off',
     '@typescript-eslint/no-explicit-any': ['off'],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    "@emotion/pkg-renaming": "error",
+    "@emotion/jsx-import": "error",
+    "@emotion/no-vanilla": "error",
+    "@emotion/import-from-emotion": "error",
+    "@emotion/styled-import": "error"
   },
 };
